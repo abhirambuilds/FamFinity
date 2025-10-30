@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="FamFinity logo">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#93c5fd"/>
+      <stop offset="100%" stop-color="#c7d2fe"/>
+    </linearGradient>
+  </defs>
+  <circle cx="64" cy="64" r="60" fill="url(#g1)"/>
+  <circle cx="64" cy="64" r="48" fill="url(#g2)" opacity="0.25"/>
+  <g fill="#fff">
+    <path d="M44 38h34a6 6 0 0 1 0 12H56v10h18a6 6 0 0 1 0 12H56v18a6 6 0 0 1-12 0V44a6 6 0 0 1 6-6z"/>
+  </g>
+</svg>
+

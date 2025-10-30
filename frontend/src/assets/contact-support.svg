@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 320" role="img" aria-label="Contact support illustration">
+  <defs>
+    <linearGradient id="csbg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#eef2ff"/>
+      <stop offset="100%" stop-color="#dbeafe"/>
+    </linearGradient>
+  </defs>
+  <rect x="12" y="12" width="496" height="296" rx="24" fill="url(#csbg)"/>
+  <g transform="translate(56,48)">
+    <rect x="240" y="8" width="168" height="120" rx="12" fill="#fff"/>
+    <rect x="256" y="28" width="104" height="12" rx="6" fill="#4f46e5" opacity="0.9"/>
+    <rect x="256" y="52" width="128" height="10" rx="5" fill="#93c5fd"/>
+    <rect x="256" y="70" width="120" height="10" rx="5" fill="#c7d2fe"/>
+    <circle cx="68" cy="76" r="44" fill="#4f46e5"/>
+    <rect x="28" y="120" width="80" height="64" rx="16" fill="#4f46e5"/>
+    <circle cx="68" cy="72" r="20" fill="#fff"/>
+    <path d="M48 196h148a20 20 0 0 0 20-20v-8" stroke="#4f46e5" stroke-width="10" stroke-linecap="round" fill="none"/>
+    <circle cx="240" cy="188" r="10" fill="#10b981"/>
+  </g>
+</svg>
+

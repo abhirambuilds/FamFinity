@@ -1,0 +1,157 @@
+# FamFinity
+
+A comprehensive financial intelligence application built with FastAPI backend and React frontend, designed specifically for Indian users with AI-powered financial advice and budgeting tools.
+
+## 🚀 Features
+
+- **AI-Powered Financial Advisor** - Get personalized financial recommendations
+- **Smart Budgeting** - Create and manage budgets with intelligent insights
+- **Expense Tracking** - Upload CSV files or manually track expenses
+- **Goal Setting** - Set and track financial goals with progress monitoring
+- **Investment Recommendations** - AI-driven investment suggestions
+- **Interactive Chatbot** - Get instant answers to financial questions
+- **Indian Currency Support** - Full support for ₹ (INR) transactions
+
+## 🛠️ Tech Stack
+
+### Backend
+- **FastAPI** - Modern Python web framework
+- **Supabase** - Database and authentication
+- **PyTorch** - Machine learning models
+- **Scikit-learn** - Data analysis and predictions
+
+### Frontend
+- **React** - User interface library
+- **Vite** - Build tool and dev server
+- **Tailwind CSS** - Styling framework
+- **Axios** - HTTP client
+
+## 📦 Installation
+
+### Prerequisites
+
+- Python 3.8+
+- Node.js 16+
+- Supabase account
+
+### Backend Setup
+
+1. **Navigate to backend directory**
+   ```bash
+   cd backend
+   ```
+
+2. **Create virtual environment**
+   ```bash
+   python -m venv venv
+   venv\Scripts\activate  # Windows
+   # source venv/bin/activate  # Mac/Linux
+   ```
+
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Set up environment variables**
+   Create a `.env` file with your Supabase credentials:
+   ```
+   SUPABASE_URL=your_supabase_url
+   SUPABASE_ANON_KEY=your_anon_key
+   SUPABASE_SERVICE_ROLE_KEY=your_service_key
+   GEMINI_API_KEY=your_gemini_key  # Optional
+   ```
+
+5. **Run database migrations**
+   ```bash
+   # Run SQL files in Supabase SQL Editor:
+   # 1. backend/db/legacy_migrations/001_init.sql
+   # 2. backend/db/002_add_budgets_expenses.sql
+   ```
+
+6. **Start the server**
+   ```bash
+   python main.py
+   # Or use: uvicorn main:app --reload
+   ```
+
+Backend will run on `http://localhost:8000`
+
+### Frontend Setup
+
+1. **Navigate to frontend directory**
+   ```bash
+   cd frontend
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start development server**
+   ```bash
+   npm run dev
+   ```
+
+Frontend will run on `http://localhost:5173`
+
+## 🎯 Quick Start
+
+1. **Access the application**: http://localhost:5173
+2. **Sign up** with your email and password
+3. **Complete onboarding** by answering 15 financial questions
+4. **Upload sample data**: Use `data/sample_user.csv`
+5. **Create your first budget** and start tracking expenses
+
+## 📊 Demo Account
+
+For testing purposes, use these credentials:
+- **Email**: demo.user@example.com
+- **Password**: demo123
+
+## 🔧 API Endpoints
+
+- `POST /auth/signup` - User registration
+- `POST /auth/signin` - User authentication
+- `GET /health` - Health check
+- `POST /upload/csv` - Upload transaction data
+- `GET /advisor/recommendations` - Get AI recommendations
+- `POST /chat/send` - Send message to AI chatbot
+
+## 📁 Project Structure
+
+```
+.
+├── backend/
+│   ├── routes/          # API endpoints
+│   ├── models/          # ML models and training
+│   ├── services/        # Business logic
+│   ├── db/             # Database migrations
+│   └── scripts/        # Utility scripts
+├── frontend/
+│   ├── src/
+│   │   ├── pages/      # React components
+│   │   ├── components/ # Reusable components
+│   │   └── api/        # API client
+│   └── public/         # Static assets
+└── data/               # Sample data files
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgments
+
+- Built with ❤️ for the Indian financial community
+- Powered by AI and modern web technologies
+- Designed for simplicity and user-friendly experience

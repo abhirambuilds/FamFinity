@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320" role="img" aria-label="Family finance illustration">
+  <defs>
+    <linearGradient id="ffg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#dbeafe"/>
+      <stop offset="100%" stop-color="#e0e7ff"/>
+    </linearGradient>
+    <linearGradient id="coin" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fde68a"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+  </defs>
+  <rect x="12" y="12" width="536" height="296" rx="24" fill="url(#ffg)"/>
+  <g transform="translate(48,48)">
+    <circle cx="392" cy="72" r="48" fill="url(#coin)"/>
+    <path d="M392 52a4 4 0 0 1 4 4v8h16a4 4 0 0 1 0 8h-16v8a4 4 0 0 1-8 0v-8h-16a4 4 0 0 1 0-8h16v-8a4 4 0 0 1 4-4z" fill="#92400e" opacity="0.85"/>
+    <g fill="#4f46e5">
+      <circle cx="96" cy="96" r="24"/>
+      <circle cx="160" cy="84" r="28"/>
+      <circle cx="216" cy="100" r="22"/>
+    </g>
+    <g fill="#2563eb" opacity="0.9">
+      <rect x="72" y="132" width="48" height="56" rx="12"/>
+      <rect x="136" y="128" width="56" height="64" rx="16"/>
+      <rect x="200" y="136" width="44" height="52" rx="10"/>
+    </g>
+    <rect x="24" y="208" width="440" height="8" rx="4" fill="#c7d2fe"/>
+  </g>
+</svg>
+

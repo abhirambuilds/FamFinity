@@ -1,0 +1,74 @@
+/* stylelint-disable-next-line at-rule-no-unknown */
+@tailwind base;
+/* stylelint-disable-next-line at-rule-no-unknown */
+@tailwind components;
+/* stylelint-disable-next-line at-rule-no-unknown */
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  body {
+    /* stylelint-disable-next-line at-rule-no-unknown */
+    @apply text-gray-900 antialiased;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    /* stylelint-disable-next-line at-rule-no-unknown */
+    @apply bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-full font-medium hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl;
+  }
+  
+  .btn-secondary {
+    /* stylelint-disable-next-line at-rule-no-unknown */
+    @apply border-2 border-gray-300 text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-400 px-6 py-3 rounded-full font-medium transition-all duration-300;
+  }
+  
+  .card {
+    /* stylelint-disable-next-line at-rule-no-unknown */
+    @apply bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300;
+  }
+  
+  .gradient-text {
+    /* stylelint-disable-next-line at-rule-no-unknown */
+    @apply bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent;
+  }
+  
+  .section-padding {
+    /* stylelint-disable-next-line at-rule-no-unknown */
+    @apply py-20;
+  }
+  
+  .container-padding {
+    /* stylelint-disable-next-line at-rule-no-unknown */
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+}
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .text-shadow-lg {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  .backdrop-blur-xs {
+    backdrop-filter: blur(2px);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

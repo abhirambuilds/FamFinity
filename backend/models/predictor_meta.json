@@ -1,0 +1,6 @@
+{
+  "baseline_mape": 0.017290029457319177,
+  "lstm_mape": 0.024321005336665216,
+  "holdout_months": 3,
+  "total_points": 36
+}
