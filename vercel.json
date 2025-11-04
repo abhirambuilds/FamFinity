@@ -1,35 +1,36 @@
 {
-  "buildCommand": "cd frontend && npm install && npm run build",
-  "outputDirectory": "frontend/dist",
-  "installCommand": "cd frontend && npm install",
-  "framework": "vite",
-  "headers": [
+  "version": 2,
+  "builds": [
     {
-      "source": "/assets/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "frontend/dist"
+      }
     }
   ],
   "routes": [
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ],
+  "headers": [
     {
-      "src": "/assets/(.*)",
-      "dest": "/assets/$1"
+      "source": "/index.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate, max-age=0" }
+      ]
     },
     {
-      "src": "/(.*\\.(js|mjs|css|json|ico|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot|webp|map))",
-      "dest": "/$1"
+      "source": "/",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate, max-age=0" }
+      ]
     },
     {
-      "src": "/src/(.*)",
-      "status": 404
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
     }
   ]
 }
