@@ -14,9 +14,10 @@ email-validator==2.3.0
 httpx>=0.26.0,<0.28.0
 websockets>=11.0,<12.0
 
-# Data processing (compatible versions)
-pandas>=1.5.0,<2.2.0
-numpy>=1.24.0,<2.0.0
+# Data processing (pinned versions with pre-built wheels)
+# Using specific versions to avoid compilation issues on Render
+numpy==1.24.3
+pandas==2.0.3
 
 # ML dependencies - WITHOUT PyTorch (fallback to baseline models only)
 scikit-learn>=1.2.0,<1.4.0
