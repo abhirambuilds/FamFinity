@@ -148,7 +148,7 @@ const About = () => {
             <h1 className="text-5xl md:text-6xl font-medium text-white leading-tight mb-6" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-2px', lineHeight: '120%' }}>
               About FamFinity
             </h1>
-            <p className="text-xl mb-10 max-w-2xl mx-auto" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', lineHeight: '1.7' }}>
+            <p className="text-lg sm:text-xl mb-10 max-w-2xl mx-auto px-4" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', lineHeight: '1.7', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
               We're on a mission to help families take control of their financial future through intelligent insights and personalized guidance. FamFinity is an AI-powered financial management platform designed to make complex financial planning simple, accessible, and actionable for families everywhere.
             </p>
           </div>
@@ -163,13 +163,13 @@ const About = () => {
               <h2 className="text-4xl md:text-5xl font-medium text-white mb-6" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-1.5px', lineHeight: '120%' }}>
                 Our Mission
               </h2>
-              <p className="text-lg mb-6" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', lineHeight: '1.7' }}>
+              <p className="text-base sm:text-lg mb-4 sm:mb-6 px-2 sm:px-0" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', lineHeight: '1.7', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
                 Financial planning shouldn't be complicated or intimidating. FamFinity makes it easy for families to understand their spending, set realistic goals, and make informed decisions about their financial future. We've built a comprehensive platform that combines powerful AI analytics with an intuitive, user-friendly interface.
               </p>
-              <p className="text-lg mb-6" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', lineHeight: '1.7' }}>
+              <p className="text-base sm:text-lg mb-4 sm:mb-6 px-2 sm:px-0" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', lineHeight: '1.7', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
                 We believe that every family deserves access to professional-grade financial tools and insights, regardless of their income level or financial knowledge. FamFinity democratizes financial planning by making sophisticated analytics and recommendations available to everyone.
               </p>
-              <p className="text-lg" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', lineHeight: '1.7' }}>
+              <p className="text-base sm:text-lg px-2 sm:px-0" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', lineHeight: '1.7', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
                 Our platform uses advanced machine learning algorithms to analyze spending patterns, predict future expenses, and provide personalized recommendations. We integrate with multiple financial institutions, support CSV imports, and offer real-time synchronization across devices, making it the perfect companion for modern families managing complex financial lives.
               </p>
             </div>
