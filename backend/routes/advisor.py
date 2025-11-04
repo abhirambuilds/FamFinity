@@ -169,7 +169,8 @@ async def _forward_to_gemini_for_advisor(prompt: str) -> str:
         return None  # Return None if API key is not set (will fall back to rule-based)
     
     # Allow override via env; default to a known-good model
-    model = os.getenv("GEMINI_MODEL", "models/gemini-1.5-flash").strip()
+    # Available models: gemini-2.5-flash, gemini-2.5-pro, gemini-2.0-flash, etc.
+    model = os.getenv("GEMINI_MODEL", "models/gemini-2.5-flash").strip()
     url = _gemini_endpoint(model)
     
     # Prepend system instruction to the prompt
