@@ -96,6 +96,17 @@ Backend will run on `http://localhost:8000`
 
 Frontend will run on `http://localhost:5173`
 
+### Frontend Static Assets
+
+PWA files (manifest, icons, logo) live in `frontend/public` and are automatically copied to the `dist` root by Vite during the build process. This includes:
+
+- `manifest.json` - PWA manifest configuration
+- `logo-mark.svg` - Application logo (SVG format)
+- `favicon.png` - Favicon for browsers (256x256 PNG)
+- `sw.js` - Service worker (currently disabled; cleanup script removes stale SWs)
+
+**Note**: There is a one-time service worker cleanup script (`src/sw-cleanup.js`) that runs in production builds to unregister any existing service workers and clear caches. This prevents stale asset 404s after deployment. The cleanup runs automatically on first load and triggers a single reload to ensure fresh assets are loaded.
+
 ## 🎯 Quick Start
 
 1. **Access the application**: http://localhost:5173

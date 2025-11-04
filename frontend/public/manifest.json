@@ -1,29 +1,13 @@
 {
-  "name": "FamFinity - Get Your Money Into Shape",
+  "name": "FamFinity",
   "short_name": "FamFinity",
-  "description": "The only app that gets your money into shape. Manage family finances with smart insights and beautiful analytics.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#120b25",
+  "background_color": "#ffffff",
   "theme_color": "#6246e9",
-  "orientation": "portrait-primary",
-  "scope": "/",
   "icons": [
-    {
-      "src": "/logo-mark.svg",
-      "sizes": "192x192",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/logo-mark.svg",
-      "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
-  ],
-  "categories": ["finance", "productivity", "business"],
-  "screenshots": [],
-  "prefer_related_applications": false
+    { "src": "/favicon.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/favicon.png", "sizes": "512x512", "type": "image/png" }
+  ]
 }
 
