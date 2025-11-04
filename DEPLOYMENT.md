@@ -20,34 +20,62 @@ This guide explains how to deploy FamFinity to production using Render for the b
 
 ### Step 2: Configure Service Settings
 
-**Basic Settings:**
+**Root Directory**: 
+- Set to `backend` (this tells Render where your backend code is located)
+
+**Basic Settings (if not using render.yaml):**
 - **Name**: `famfinity-backend`
 - **Environment**: `Python 3`
-- **Build Command**: `pip install -r backend/requirements.txt`
-- **Start Command**: `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT`
+- **Root Directory**: `backend`
+- **Build Command**: `pip install -r requirements.txt`
+- **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
 
-**OR use the render.yaml file:**
+**Using render.yaml (Recommended):**
 - Render will automatically detect `render.yaml` in your repository root
 - This file contains all the configuration needed
+- **Root Directory**: Set to `backend` (or leave empty if using render.yaml which specifies `rootDir: backend`)
+- The `render.yaml` file already specifies:
+  - Root directory: `backend`
+  - Build command: `pip install -r requirements.txt`
+  - Start command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+  - Environment variables (you'll still need to set their values)
 
 ### Step 3: Set Environment Variables
 
 In Render dashboard, go to **Environment** tab and add:
 
-- `SUPABASE_URL` - Your Supabase project URL
-- `SUPABASE_ANON_KEY` - Your Supabase anonymous key
-- `SUPABASE_SERVICE_ROLE_KEY` - Your Supabase service role key
-- `GEMINI_API_KEY` - (Optional) Your Google Gemini API key
+**Required Variables:**
+- `SUPABASE_URL` - Your Supabase project URL (e.g., `https://xxxxx.supabase.co`)
+- `SUPABASE_ANON_KEY` - Your Supabase anonymous key (found in Supabase Dashboard → Settings → API)
+- `SUPABASE_SERVICE_ROLE_KEY` - Your Supabase service role key (found in Supabase Dashboard → Settings → API)
+
+**Optional Variables:**
+- `GEMINI_API_KEY` - Your Google Gemini API key (required for AI features)
 - `FRONTEND_URL` - Your Vercel frontend URL (e.g., `https://your-app.vercel.app`)
 
-**Important**: Set `FRONTEND_URL` after you deploy the frontend to get the correct URL.
+**Important Notes:**
+- Set `FRONTEND_URL` after you deploy the frontend to get the correct URL
+- Make sure there are no trailing slashes in URLs
+- All environment variables are case-sensitive
+- You can set variables individually or use the sync feature from `render.yaml`
 
 ### Step 4: Deploy
 
-1. Click **"Create Web Service"**
-2. Render will automatically build and deploy your backend
-3. Wait for the deployment to complete (usually 5-10 minutes)
-4. Note your backend URL (e.g., `https://famfinity-backend.onrender.com`)
+1. Click **"Create Web Service"** (or **"Apply"** if using render.yaml)
+2. Render will automatically:
+   - Clone your repository
+   - Install Python dependencies from `backend/requirements.txt`
+   - Build your application
+   - Start the FastAPI server
+3. Wait for the deployment to complete (usually 5-10 minutes for first deployment)
+4. Monitor the build logs for any errors
+5. Once deployed, note your backend URL (e.g., `https://famfinity-backend.onrender.com`)
+6. Test the health endpoint: `https://your-backend.onrender.com/health`
+
+**Deployment Status:**
+- ✅ **Live**: Service is running and accessible
+- ⏳ **Building**: Still installing dependencies or building
+- ❌ **Failed**: Check build logs for errors
 
 ## Frontend Deployment on Vercel
 
@@ -60,12 +88,32 @@ In Render dashboard, go to **Environment** tab and add:
 
 ### Step 2: Configure Project Settings
 
-**Framework Preset**: Vite
 **Root Directory**: `frontend`
-**Build Command**: `npm run build`
-**Output Directory**: `dist`
+- This tells Vercel where your frontend code is located
+- When root directory is set to `frontend`, Vercel operates from within that directory
+- **Do NOT** include `cd frontend` or `frontend/` prefixes in commands
 
-**OR** Vercel will auto-detect these settings from `vercel.json`
+**Framework Preset**: Vite (auto-detected)
+**Build Command**: `npm run build` (not `cd frontend && npm run build`)
+**Output Directory**: `dist` (not `frontend/dist`)
+**Install Command**: `npm install` (not `cd frontend && npm install`)
+
+**Using vercel.json (Recommended):**
+- Vercel will automatically use `vercel.json` from your repository root
+- The `vercel.json` file only contains framework and routing configuration
+- **Root Directory**: Set to `frontend` in Vercel dashboard
+- Vercel will auto-detect the correct commands when Root Directory is set to `frontend`:
+  - Build command: `npm run build` (auto-detected)
+  - Output directory: `dist` (auto-detected)
+  - Install command: `npm install` (auto-detected)
+
+**If fields are locked/unable to edit:**
+1. Make sure Root Directory is set to `frontend` in Vercel dashboard
+2. The `vercel.json` file doesn't override build/install commands, allowing Vercel to auto-detect correctly
+3. After setting Root Directory to `frontend`, Vercel should auto-detect the correct paths
+4. If still locked, you may need to delete and recreate the Vercel project, or contact Vercel support
+
+**Note**: Make sure `vercel.json` is in your repository root (not in the frontend folder)
 
 ### Step 3: Set Environment Variables
 
@@ -94,11 +142,29 @@ After getting your Vercel frontend URL:
 
 ## Post-Deployment Checklist
 
-- [ ] Backend health check: Visit `https://your-backend.onrender.com/health`
+### Backend Verification
+- [ ] Backend health check: Visit `https://your-backend.onrender.com/health` - should return `{"status": "healthy"}`
+- [ ] API docs accessible: Visit `https://your-backend.onrender.com/docs` - should show Swagger UI
+- [ ] Environment variables: All required variables set in Render dashboard
+- [ ] Build logs: No errors in Render deployment logs
+- [ ] Service status: Shows "Live" in Render dashboard
+
+### Frontend Verification
 - [ ] Frontend loads correctly: Visit your Vercel URL
-- [ ] API connection: Test signup/login functionality
+- [ ] No console errors: Check browser developer console
+- [ ] Environment variables: `VITE_API_URL` set correctly in Vercel
+- [ ] Build logs: No errors in Vercel deployment logs
+
+### Integration Testing
+- [ ] API connection: Test signup/login functionality from frontend
 - [ ] CORS working: No CORS errors in browser console
-- [ ] Environment variables: All set correctly in both platforms
+- [ ] Data persistence: Create account, verify data saves to Supabase
+- [ ] All routes working: Navigate through all pages without 404 errors
+
+### Database Verification
+- [ ] Supabase connection: Backend can connect to Supabase
+- [ ] Tables exist: Verify all required tables are created in Supabase
+- [ ] Row Level Security (RLS): Policies are enabled and working correctly
 
 ## Troubleshooting
 
@@ -133,7 +199,14 @@ After getting your Vercel frontend URL:
 
 **404 errors on routes:**
 - Vercel should handle this automatically with the `vercel.json` configuration
-- Ensure `vercel.json` is in the repository root
+- Ensure `vercel.json` is in the repository root (not in frontend folder)
+- Verify the `rewrites` configuration in `vercel.json` is correct
+- Check that React Router is configured correctly in your app
+
+**Environment variables not working:**
+- Vercel environment variables must be prefixed with `VITE_` to be accessible in the frontend
+- Rebuild the deployment after adding/changing environment variables
+- Verify variables are set for the correct environment (Production/Preview/Development)
 
 ## Environment Variables Summary
 
@@ -154,15 +227,33 @@ VITE_API_URL=https://your-backend.onrender.com
 ## Cost Considerations
 
 ### Render Free Tier
-- 750 hours/month free
-- Service spins down after 15 minutes of inactivity
-- First request after spin-down may take 30-60 seconds (cold start)
+- **750 hours/month** free (enough for one service running 24/7)
+- **Service spins down** after 15 minutes of inactivity
+- **Cold start**: First request after spin-down may take 30-60 seconds
+- **Auto-deploy**: Automatically deploys on git push
+- **HTTPS**: Automatic SSL certificates
+- **Custom domains**: Supported on free tier
+
+**Render Paid Tier** (if needed):
+- Starts at $7/month per service
+- No spin-down, always available
+- Faster cold starts
+- Better performance
 
 ### Vercel Free Tier
-- Unlimited deployments
-- 100GB bandwidth/month
-- Automatic HTTPS
-- Global CDN
+- **Unlimited deployments** and previews
+- **100GB bandwidth/month**
+- **Automatic HTTPS** and SSL
+- **Global CDN** for fast loading
+- **Custom domains** supported
+- **Analytics**: Basic analytics included
+
+### Supabase Free Tier
+- **500MB database** storage
+- **2GB bandwidth/month**
+- **50,000 monthly active users**
+- **2GB file storage**
+- **Unlimited API requests** (within rate limits)
 
 ## Updating Your Deployment
 
@@ -176,10 +267,113 @@ VITE_API_URL=https://your-backend.onrender.com
 2. Vercel automatically detects changes and redeploys
 3. Monitor deployment in Vercel dashboard
 
+## Database Setup on Supabase
+
+Before deploying, ensure your Supabase database is properly set up:
+
+### Step 1: Run Database Migrations
+
+1. Go to Supabase Dashboard → SQL Editor
+2. Run the following SQL files in order:
+   - `backend/db/legacy_migrations/001_init.sql` - Creates initial tables
+   - `backend/db/002_add_budgets_expenses.sql` - Adds budgets and expenses tables
+   - `backend/db/003_complete_schema.sql` - Completes the schema
+
+### Step 2: Enable Row Level Security (RLS)
+
+1. Go to Supabase Dashboard → Authentication → Policies
+2. Run `backend/db/supabase_policies.sql` to set up RLS policies
+3. Verify that RLS is enabled on all tables
+
+### Step 3: Verify Setup
+
+1. Check that all tables exist:
+   - `users`
+   - `user_profiles`
+   - `onboarding_responses`
+   - `budgets`
+   - `expenses`
+   - `goals`
+   - `investments`
+
+2. Test database connection from backend using your Supabase credentials
+
+## Custom Domain Setup
+
+### Render (Backend)
+1. In Render dashboard, go to your service settings
+2. Click **"Custom Domains"**
+3. Add your domain (e.g., `api.yourdomain.com`)
+4. Follow DNS configuration instructions
+5. SSL certificate will be automatically provisioned
+
+### Vercel (Frontend)
+1. In Vercel dashboard, go to your project settings
+2. Click **"Domains"**
+3. Add your domain (e.g., `yourdomain.com` or `www.yourdomain.com`)
+4. Configure DNS records as instructed
+5. SSL certificate will be automatically provisioned
+
+## Monitoring and Logs
+
+### Render Logs
+- Access logs from Render dashboard → Your Service → Logs
+- Real-time logs available during deployment
+- Historical logs stored for debugging
+
+### Vercel Logs
+- Access logs from Vercel dashboard → Your Project → Deployments → View Function Logs
+- Real-time logs during deployment
+- Analytics dashboard available for performance metrics
+
+### Health Monitoring
+- Set up health check monitoring for backend: `https://your-backend.onrender.com/health`
+- Monitor response times and uptime
+- Set up alerts for service downtime
+
+## Rollback Procedure
+
+### Render Rollback
+1. Go to Render dashboard → Your Service → Manual Deploy
+2. Click on a previous successful deployment
+3. Select **"Redeploy this commit"**
+4. Service will roll back to that version
+
+### Vercel Rollback
+1. Go to Vercel dashboard → Your Project → Deployments
+2. Find the deployment you want to roll back to
+3. Click the **"..."** menu → **"Promote to Production"**
+4. Frontend will roll back to that version
+
+## Security Best Practices
+
+1. **Environment Variables**: Never commit secrets to git
+2. **CORS**: Only allow your frontend domain in CORS settings
+3. **API Keys**: Rotate API keys regularly
+4. **Database**: Use RLS policies in Supabase
+5. **HTTPS**: Always use HTTPS in production (automatic on Render/Vercel)
+6. **Dependencies**: Keep dependencies updated for security patches
+
+## Performance Optimization
+
+### Backend
+- Use connection pooling for database connections
+- Enable caching where appropriate
+- Optimize database queries
+- Consider upgrading Render plan for better performance
+
+### Frontend
+- Enable Vercel's automatic image optimization
+- Use code splitting for better load times
+- Minimize bundle size
+- Leverage CDN caching
+
 ## Additional Resources
 
 - [Render Documentation](https://render.com/docs)
 - [Vercel Documentation](https://vercel.com/docs)
 - [FastAPI Deployment](https://fastapi.tiangolo.com/deployment/)
 - [Vite Deployment](https://vitejs.dev/guide/static-deploy.html)
+- [Supabase Documentation](https://supabase.com/docs)
+- [Render render.yaml Reference](https://render.com/docs/yaml-spec)
 
