@@ -7,5 +7,19 @@ export default defineConfig({
   server: {
     port: 3000,
     host: true
+  },
+  publicDir: 'public',
+  build: {
+    rollupOptions: {
+      output: {
+        // Ensure service worker and manifest are included in build
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name === 'sw.js' || assetInfo.name === 'manifest.json') {
+            return '[name][extname]';
+          }
+          return 'assets/[name]-[hash][extname]';
+        }
+      }
+    }
   }
 })

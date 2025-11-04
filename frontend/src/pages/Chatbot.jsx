@@ -91,16 +91,16 @@ const Chatbot = () => {
 
   return (
     <AppLayout user={user}>
-      <div className="max-w-4xl mx-auto space-y-6">
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-2xl">
+      <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6 overflow-x-hidden" style={{ width: '100%', maxWidth: '100%' }}>
+        <div className="bg-[#252525] rounded-xl shadow-sm p-4 sm:p-6 border border-gray-800 overflow-hidden" style={{ width: '100%', maxWidth: '100%' }}>
+          <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+            <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-600 rounded-full flex items-center justify-center text-xl sm:text-2xl flex-shrink-0">
                 💬
               </div>
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900">AI Chatbot</h2>
-                <p className="text-gray-500">Ask anything about finance and the world</p>
+              <div className="min-w-0">
+                <h2 className="text-xl sm:text-2xl font-bold text-white break-words" style={{ wordBreak: 'break-word' }}>AI Chatbot</h2>
+                <p className="text-sm sm:text-base text-gray-400 break-words" style={{ wordBreak: 'break-word' }}>Ask anything about finance and the world</p>
               </div>
             </div>
             <button

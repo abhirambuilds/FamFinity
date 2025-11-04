@@ -36,9 +36,10 @@ This guide explains how to deploy FamFinity to production using Render for the b
 - **Root Directory**: Set to `backend` (or leave empty if using render.yaml which specifies `rootDir: backend`)
 - The `render.yaml` file already specifies:
   - Root directory: `backend`
-  - Build command: `pip install -r requirements.txt`
+  - Build command: `pip install --upgrade pip && pip install -r requirements-production.txt && pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu`
   - Start command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
   - Environment variables (you'll still need to set their values)
+- **Note**: PyTorch is installed using CPU-only pre-built wheels from PyTorch's official repository. This avoids compilation issues and is lighter (~500MB vs ~2GB+). LSTM predictions will work fully.
 
 ### Step 3: Set Environment Variables
 
@@ -64,7 +65,8 @@ In Render dashboard, go to **Environment** tab and add:
 1. Click **"Create Web Service"** (or **"Apply"** if using render.yaml)
 2. Render will automatically:
    - Clone your repository
-   - Install Python dependencies from `backend/requirements.txt`
+   - Install Python dependencies from `backend/requirements-production.txt`
+   - Install CPU-only PyTorch (for LSTM predictions) using pre-built wheels
    - Build your application
    - Start the FastAPI server
 3. Wait for the deployment to complete (usually 5-10 minutes for first deployment)
@@ -88,34 +90,61 @@ In Render dashboard, go to **Environment** tab and add:
 
 ### Step 2: Configure Project Settings
 
+**You have two options for Root Directory:**
+
+#### Option 1: Root Directory = `./` (Repository Root) - **Recommended if fields are locked**
+
+**Root Directory**: `./` or leave empty (repository root)
+- This tells Vercel to use the repository root
+- Commands need to include `cd frontend` or `frontend/` prefixes
+
+**Framework Preset**: Vite (auto-detected)
+**Build Command**: `cd frontend && npm install && npm run build`
+**Output Directory**: `frontend/dist`
+**Install Command**: `cd frontend && npm install`
+
+**Using vercel.json (Recommended):**
+- Vercel will automatically use `vercel.json` from your repository root
+- The `vercel.json` file already specifies the correct commands for root directory setup:
+  - Build command: `cd frontend && npm install && npm run build`
+  - Output directory: `frontend/dist`
+  - Install command: `cd frontend && npm install`
+- **Root Directory**: Set to `./` or leave empty in Vercel dashboard
+
+#### Option 2: Root Directory = `frontend`
+
 **Root Directory**: `frontend`
 - This tells Vercel where your frontend code is located
 - When root directory is set to `frontend`, Vercel operates from within that directory
 - **Do NOT** include `cd frontend` or `frontend/` prefixes in commands
 
 **Framework Preset**: Vite (auto-detected)
-**Build Command**: `npm run build` (not `cd frontend && npm run build`)
-**Output Directory**: `dist` (not `frontend/dist`)
-**Install Command**: `npm install` (not `cd frontend && npm install`)
+**Build Command**: `npm run build`
+**Output Directory**: `dist`
+**Install Command**: `npm install`
 
-**Using vercel.json (Recommended):**
-- Vercel will automatically use `vercel.json` from your repository root
-- The `vercel.json` file only contains framework and routing configuration
-- **Root Directory**: Set to `frontend` in Vercel dashboard
-- Vercel will auto-detect the correct commands when Root Directory is set to `frontend`:
-  - Build command: `npm run build` (auto-detected)
-  - Output directory: `dist` (auto-detected)
-  - Install command: `npm install` (auto-detected)
-
-**If fields are locked/unable to edit:**
-1. Make sure Root Directory is set to `frontend` in Vercel dashboard
-2. The `vercel.json` file doesn't override build/install commands, allowing Vercel to auto-detect correctly
-3. After setting Root Directory to `frontend`, Vercel should auto-detect the correct paths
-4. If still locked, you may need to delete and recreate the Vercel project, or contact Vercel support
+**If using this option, remove build/install commands from vercel.json** (keep only framework and rewrites)
 
 **Note**: Make sure `vercel.json` is in your repository root (not in the frontend folder)
 
 ### Step 3: Set Environment Variables
+
+#### Local Development (.env file)
+
+Create a `.env` file in the `frontend/` directory with:
+
+```env
+# API Base URL - Backend server URL
+# For local development: http://localhost:8000
+VITE_API_URL=http://localhost:8000
+```
+
+**Important Notes:**
+- Vite requires the `VITE_` prefix for environment variables to be exposed to the frontend
+- Never commit `.env` files to git (add to `.gitignore`)
+- The `.env` file should be in the `frontend/` directory (not root)
+
+#### Production (Vercel Dashboard)
 
 In Vercel project settings, go to **Environment Variables** and add:
 
@@ -171,9 +200,14 @@ After getting your Vercel frontend URL:
 ### Backend Issues
 
 **Build fails:**
-- Check that all dependencies are in `requirements.txt`
-- Verify Python version (Render uses Python 3.8+ by default)
-- Check build logs in Render dashboard
+- **PyTorch build errors**: The `render.yaml` uses CPU-only PyTorch wheels which should install without compilation. If you still get errors:
+  - Check that the build command includes the `--index-url https://download.pytorch.org/whl/cpu` flag
+  - Try using `requirements-production-no-torch.txt` as a fallback (LSTM features will use baseline models instead)
+  - Verify Python version (Render uses Python 3.8+ by default)
+- **Metadata generation errors**: Usually caused by large ML packages. The production setup uses CPU-only PyTorch pre-built wheels to avoid this
+- Check that all dependencies are in the requirements file you're using
+- Check build logs in Render dashboard for specific error messages
+- **If still failing**: Temporarily switch to `requirements-production-no-torch.txt` in `render.yaml` to isolate the issue
 
 **Service crashes:**
 - Check environment variables are set correctly
@@ -210,18 +244,39 @@ After getting your Vercel frontend URL:
 
 ## Environment Variables Summary
 
-### Render (Backend)
+### Frontend Environment Variables
+
+#### Local Development (`.env` file in `frontend/` directory)
+```env
+# Required: Backend API URL
+VITE_API_URL=http://localhost:8000
 ```
+
+#### Production (Vercel Dashboard)
+```env
+# Required: Backend API URL (your Render backend URL)
+VITE_API_URL=https://your-backend.onrender.com
+```
+
+**Frontend Notes:**
+- Only **ONE** environment variable is needed: `VITE_API_URL`
+- Vite requires the `VITE_` prefix for variables to be accessible in the frontend code
+- The variable is used in `frontend/src/api/index.js` to set the API base URL
+- If not set, it defaults to `http://localhost:8000` (for local development)
+
+### Backend Environment Variables (Render)
+
+```env
+# Required: Supabase Configuration
 SUPABASE_URL=your_supabase_url
 SUPABASE_ANON_KEY=your_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_service_key
-GEMINI_API_KEY=your_gemini_key (optional)
-FRONTEND_URL=https://your-app.vercel.app
-```
 
-### Vercel (Frontend)
-```
-VITE_API_URL=https://your-backend.onrender.com
+# Optional: AI Features
+GEMINI_API_KEY=your_gemini_key
+
+# Required after frontend deployment: CORS Configuration
+FRONTEND_URL=https://your-app.vercel.app
 ```
 
 ## Cost Considerations

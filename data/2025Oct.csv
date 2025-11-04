@@ -1,0 +1,187 @@
+date,amount,category,description
+2025-10-01,-12500.00,rent,Monthly Rent
+2025-10-01,-850.50,groceries,DMart
+2025-10-01,-650.00,utilities,Electricity Bill
+2025-10-01,-180.00,transportation,Metro Card
+2025-10-01,-320.00,dining,Local Restaurant
+2025-10-01,-450.00,entertainment,Netflix Subscription
+2025-10-02,-680.30,groceries,Big Bazaar
+2025-10-02,-520.40,utilities,Internet Bill
+2025-10-02,-320.00,dining,Local Restaurant
+2025-10-02,-250.00,transportation,Auto Fare
+2025-10-02,-199.00,entertainment,Amazon Prime
+2025-10-02,-750.60,groceries,Reliance Fresh
+2025-10-03,-950.75,groceries,Reliance Fresh
+2025-10-03,-380.50,transportation,Auto Fare
+2025-10-03,-199.00,entertainment,Netflix Subscription
+2025-10-03,-550.40,utilities,Water Bill
+2025-10-03,-420.00,dining,KFC
+2025-10-03,-680.90,groceries,More Supermarket
+2025-10-04,-720.00,utilities,Water Bill
+2025-10-04,-1250.25,shopping,Amazon Purchase
+2025-10-04,-550.60,groceries,More Supermarket
+2025-10-04,-380.00,transportation,Bus Pass
+2025-10-04,-199.00,entertainment,Hotstar Premium
+2025-10-04,-320.50,dining,Local Restaurant
+2025-10-05,-450.00,entertainment,Amazon Prime
+2025-10-05,-680.80,dining,KFC
+2025-10-05,-920.40,utilities,LPG Cylinder
+2025-10-05,-550.20,transportation,Fuel
+2025-10-05,-850.60,groceries,DMart
+2025-10-05,-750.80,shopping,Flipkart
+2025-10-06,-420.30,transportation,Bus Pass
+2025-10-06,-1050.90,groceries,Big Basket
+2025-10-06,-380.00,dining,Local Restaurant
+2025-10-06,-650.20,utilities,Electricity Bill
+2025-10-06,-199.00,entertainment,Spotify Premium
+2025-10-06,-520.70,groceries,Kirana Store
+2025-10-07,-199.00,entertainment,Hotstar Premium
+2025-10-07,-750.50,shopping,Flipkart
+2025-10-07,-650.20,utilities,Electricity Bill
+2025-10-07,-680.30,transportation,Uber
+2025-10-07,-920.80,groceries,Big Bazaar
+2025-10-07,-320.00,dining,Local Restaurant
+2025-10-08,-520.70,groceries,Kirana Store
+2025-10-08,-880.00,dining,Domino's Pizza
+2025-10-08,-450.00,entertainment,Spotify Premium
+2025-10-08,-550.40,utilities,Internet Bill
+2025-10-08,-380.50,transportation,Metro Card
+2025-10-08,-680.90,groceries,Reliance Fresh
+2025-10-09,-680.30,transportation,Fuel
+2025-10-09,-920.80,groceries,DMart
+2025-10-09,-550.40,utilities,Internet Bill
+2025-10-09,-320.50,dining,Local Restaurant
+2025-10-09,-199.00,entertainment,YouTube Premium
+2025-10-09,-850.60,shopping,Amazon
+2025-10-10,-320.50,dining,Local Restaurant
+2025-10-10,-1250.60,shopping,Myntra
+2025-10-10,-950.20,groceries,Big Bazaar
+2025-10-10,-720.00,utilities,Water Bill
+2025-10-10,-380.00,transportation,Auto Fare
+2025-10-10,-199.00,entertainment,Netflix Subscription
+2025-10-11,-720.00,utilities,Water Bill
+2025-10-11,-450.00,entertainment,Movie Tickets
+2025-10-11,-680.90,transportation,Uber
+2025-10-11,-550.60,groceries,More Supermarket
+2025-10-11,-320.00,dining,KFC
+2025-10-11,-750.80,shopping,Flipkart
+2025-10-12,-1050.40,groceries,Reliance Fresh
+2025-10-12,-380.50,dining,Pizza Hut
+2025-10-12,-199.00,entertainment,YouTube Premium
+2025-10-12,-850.70,utilities,Electricity Bill
+2025-10-12,-420.30,transportation,Bus Pass
+2025-10-12,-680.90,groceries,Big Basket
+2025-10-13,-850.70,utilities,Electricity Bill
+2025-10-13,-920.30,groceries,More Supermarket
+2025-10-13,-550.60,shopping,Amazon
+2025-10-13,-320.50,dining,Local Restaurant
+2025-10-13,-380.00,transportation,Metro Card
+2025-10-13,-199.00,entertainment,Amazon Prime
+2025-10-14,-420.00,transportation,Metro Card
+2025-10-14,-680.80,dining,Local Restaurant
+2025-10-14,-950.50,utilities,Internet Bill
+2025-10-14,-720.40,groceries,Big Basket
+2025-10-14,-550.20,transportation,Auto Fare
+2025-10-14,-450.00,entertainment,Spotify Premium
+2025-10-15,146155.44,income,Monthly Salary
+2025-10-15,-720.40,groceries,Big Basket
+2025-10-15,-380.00,entertainment,Netflix Subscription
+2025-10-15,-1250.90,shopping,Flipkart Sale
+2025-10-15,-680.00,utilities,Water Bill
+2025-10-15,-550.60,dining,Domino's Pizza
+2025-10-16,-550.20,transportation,Auto Fare
+2025-10-16,-850.60,groceries,DMart
+2025-10-16,-680.00,utilities,Water Bill
+2025-10-16,-320.00,dining,Local Restaurant
+2025-10-16,-199.00,entertainment,Hotstar Premium
+2025-10-16,-750.80,shopping,Myntra
+2025-10-17,-450.70,dining,KFC
+2025-10-17,-920.30,groceries,Kirana Store
+2025-10-17,-199.00,entertainment,Amazon Prime
+2025-10-17,-550.40,utilities,Internet Bill
+2025-10-17,-380.50,transportation,Bus Pass
+2025-10-17,-680.90,groceries,Big Bazaar
+2025-10-18,-1050.80,utilities,LPG Cylinder
+2025-10-18,-380.50,transportation,Bus Pass
+2025-10-18,-720.40,groceries,Big Bazaar
+2025-10-18,-550.00,dining,Local Restaurant
+2025-10-18,-199.00,entertainment,YouTube Premium
+2025-10-18,-850.60,shopping,Amazon
+2025-10-19,-550.00,dining,Local Restaurant
+2025-10-19,-850.60,shopping,Myntra
+2025-10-19,-450.30,entertainment,Spotify Premium
+2025-10-19,-680.70,utilities,Electricity Bill
+2025-10-19,-380.00,transportation,Metro Card
+2025-10-19,-920.50,groceries,Reliance Fresh
+2025-10-20,-680.70,utilities,Electricity Bill
+2025-10-20,-920.50,groceries,Reliance Fresh
+2025-10-20,-380.00,transportation,Fuel
+2025-10-20,-550.40,dining,Domino's Pizza
+2025-10-20,-199.00,entertainment,Netflix Subscription
+2025-10-20,-750.80,shopping,Flipkart
+2025-10-21,-550.40,dining,Domino's Pizza
+2025-10-21,-750.80,utilities,Internet Bill
+2025-10-21,-1050.20,groceries,More Supermarket
+2025-10-21,-420.60,transportation,Metro Card
+2025-10-21,-199.00,entertainment,Amazon Prime
+2025-10-21,-680.90,groceries,Big Basket
+2025-10-22,-420.60,transportation,Metro Card
+2025-10-22,-680.40,dining,Local Restaurant
+2025-10-22,-950.30,utilities,Water Bill
+2025-10-22,-720.80,groceries,Big Basket
+2025-10-22,-550.20,transportation,Auto Fare
+2025-10-22,-450.00,entertainment,Spotify Premium
+2025-10-23,-720.80,groceries,Big Basket
+2025-10-23,-199.00,entertainment,Hotstar Premium
+2025-10-23,-1150.50,shopping,Amazon
+2025-10-23,-680.00,utilities,Electricity Bill
+2025-10-23,-380.50,transportation,Bus Pass
+2025-10-23,-550.60,dining,KFC
+2025-10-24,-550.20,transportation,Auto Fare
+2025-10-24,-850.60,groceries,DMart
+2025-10-24,-680.00,utilities,Electricity Bill
+2025-10-24,-320.00,dining,Local Restaurant
+2025-10-24,-199.00,entertainment,YouTube Premium
+2025-10-24,-920.30,groceries,Kirana Store
+2025-10-25,-450.70,dining,KFC
+2025-10-25,-920.30,groceries,Kirana Store
+2025-10-25,-199.00,entertainment,YouTube Premium
+2025-10-25,-1050.80,utilities,LPG Cylinder
+2025-10-25,-380.50,transportation,Bus Pass
+2025-10-25,-750.80,shopping,Myntra
+2025-10-26,-1050.80,utilities,LPG Cylinder
+2025-10-26,-380.50,transportation,Bus Pass
+2025-10-26,-720.40,groceries,Big Bazaar
+2025-10-26,-550.00,dining,Local Restaurant
+2025-10-26,-199.00,entertainment,Netflix Subscription
+2025-10-26,-850.60,shopping,Amazon
+2025-10-27,-550.00,dining,Local Restaurant
+2025-10-27,-850.60,shopping,Myntra
+2025-10-27,-450.30,entertainment,Spotify Premium
+2025-10-27,-680.70,utilities,Electricity Bill
+2025-10-27,-380.00,transportation,Fuel
+2025-10-27,-920.50,groceries,Reliance Fresh
+2025-10-28,-680.70,utilities,Electricity Bill
+2025-10-28,-920.50,groceries,Reliance Fresh
+2025-10-28,-380.00,transportation,Fuel
+2025-10-28,-550.40,dining,Domino's Pizza
+2025-10-28,-199.00,entertainment,Hotstar Premium
+2025-10-28,-750.80,shopping,Flipkart
+2025-10-29,-550.40,dining,Domino's Pizza
+2025-10-29,-750.80,utilities,Internet Bill
+2025-10-29,-1050.20,groceries,More Supermarket
+2025-10-29,-420.60,transportation,Metro Card
+2025-10-29,-199.00,entertainment,Amazon Prime
+2025-10-29,-680.90,groceries,Big Basket
+2025-10-30,-420.60,transportation,Metro Card
+2025-10-30,-680.40,dining,Local Restaurant
+2025-10-30,-950.30,utilities,Water Bill
+2025-10-30,-720.80,groceries,Big Basket
+2025-10-30,-550.20,transportation,Auto Fare
+2025-10-30,-450.00,entertainment,Spotify Premium
+2025-10-31,-720.80,groceries,Big Basket
+2025-10-31,-199.00,entertainment,Netflix Subscription
+2025-10-31,-1150.50,shopping,Flipkart
+2025-10-31,-680.00,utilities,Electricity Bill
+2025-10-31,-380.50,transportation,Bus Pass
+2025-10-31,-550.60,dining,Pizza Hut

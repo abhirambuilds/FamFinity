@@ -1,0 +1,38 @@
+# Core FastAPI dependencies
+fastapi==0.104.1
+uvicorn==0.24.0
+python-dotenv==1.0.0
+supabase>=2.8.0
+sqlalchemy==2.0.23
+asyncpg==0.29.0
+pydantic>=2.9.2
+python-multipart==0.0.6
+passlib[bcrypt]==1.7.4
+bcrypt>=4.0.0,<5.0.0
+python-jose[cryptography]==3.3.0
+email-validator==2.3.0
+httpx>=0.26.0,<0.28.0
+websockets>=11.0,<12.0
+
+# Data processing (compatible versions)
+pandas>=1.5.0,<2.2.0
+numpy>=1.24.0,<2.0.0
+
+# ML dependencies - CPU-only versions (lighter for deployment)
+# Using CPU-only torch to reduce build size and avoid CUDA dependencies
+scikit-learn>=1.2.0,<1.4.0
+matplotlib>=3.6.0,<3.9.0
+joblib>=1.2.0,<1.4.0
+
+# PyTorch CPU-only (lighter version for deployment)
+# Using CPU-only to avoid CUDA dependencies and reduce build size
+# Install using: pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+# Note: These are installed via buildCommand in render.yaml to use the CPU index
+
+# Database migrations
+alembic==1.13.1
+
+# Testing
+pytest==7.4.3
+pytest-asyncio==0.21.1
+

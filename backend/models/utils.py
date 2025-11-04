@@ -4,9 +4,18 @@ from typing import Any, Dict, List, Tuple
 
 import joblib
 import numpy as np
-import torch
 
-from .train_predictor import LSTMPredictor, rolling_forecast_lstm
+# Optional torch import - gracefully handle if not available
+try:
+    import torch
+    from .train_predictor import LSTMPredictor, rolling_forecast_lstm
+    TORCH_AVAILABLE = True
+except (ImportError, ModuleNotFoundError):
+    # If torch or train_predictor fails to import, set to None
+    torch = None
+    LSTMPredictor = None
+    rolling_forecast_lstm = None
+    TORCH_AVAILABLE = False
 
 
 MODELS_DIR = os.path.dirname(__file__)
@@ -23,7 +32,11 @@ def load_baseline_model(path: str | None = None):
     return joblib.load(path)
 
 
-def load_lstm_predictor(path: str | None = None) -> LSTMPredictor:
+def load_lstm_predictor(path: str | None = None) -> Any:
+    if not TORCH_AVAILABLE:
+        raise ImportError("PyTorch is not installed. Install torch to use LSTM predictor.")
+    if LSTMPredictor is None:
+        raise ImportError("LSTMPredictor is not available. Install torch to use LSTM predictor.")
     path = path or os.path.join(get_models_dir(), 'predictor.pt')
     if not os.path.exists(path):
         raise FileNotFoundError(f"Predictor not found at {path}")
@@ -55,9 +68,12 @@ def forecast_with_models(history: List[float], months: int = 3) -> Dict[str, Any
 
     try:
         lstm = load_lstm_predictor()
-        lstm_pred = rolling_forecast_lstm(lstm, series, months)
-        result['lstm'] = lstm_pred
-    except FileNotFoundError:
+        if rolling_forecast_lstm is not None:
+            lstm_pred = rolling_forecast_lstm(lstm, series, months)
+            result['lstm'] = lstm_pred
+        else:
+            result['lstm'] = []
+    except (FileNotFoundError, ImportError):
         result['lstm'] = []
 
     return result

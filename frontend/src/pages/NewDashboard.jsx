@@ -205,78 +205,78 @@ const NewDashboard = () => {
 
   return (
     <AppLayout user={user}>
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 mb-6 overflow-x-hidden" style={{ width: '100%', maxWidth: '100%' }}>
         {/* Top Left - Financial Summary Card */}
         <div className="lg:col-span-5">
-          <div className="bg-[#252525] rounded-xl p-6 border border-gray-800">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-lg font-semibold text-white">Financial Overview</h3>
+          <div className="bg-[#252525] rounded-xl p-4 sm:p-6 border border-gray-800 overflow-hidden" style={{ width: '100%', maxWidth: '100%' }}>
+            <div className="flex justify-between items-center mb-6 flex-wrap gap-3">
+              <h3 className="text-base sm:text-lg font-semibold text-white whitespace-nowrap" style={{ writingMode: 'horizontal-tb', textOrientation: 'mixed' }}>Financial Overview</h3>
               <input
                 type="month"
                 value={selectedMonth}
                 onChange={(e) => setSelectedMonth(e.target.value)}
-                className="text-sm border border-gray-700 bg-[#2a2a2a] text-white rounded px-3 py-1"
+                className="text-xs sm:text-sm border border-gray-700 bg-[#2a2a2a] text-white rounded px-2 sm:px-3 py-1 flex-shrink-0"
               />
             </div>
             
             {/* Key Metrics Grid */}
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <div className="bg-[#2a2a2a] rounded-lg p-4">
-                <p className="text-xs text-gray-400 mb-1">Month Saving</p>
-                <h3 className="text-2xl font-bold text-green-400">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-6">
+              <div className="bg-[#2a2a2a] rounded-lg p-3 sm:p-4 min-w-0">
+                <p className="text-xs text-gray-400 mb-1 whitespace-nowrap">Monthly Savings</p>
+                <h3 className="text-lg sm:text-2xl font-bold text-green-400 whitespace-nowrap overflow-hidden text-ellipsis">
                   {formatCurrency(summary?.month_saving || (totalIncome - totalExpenses))}
                 </h3>
-                <p className="text-xs text-gray-500 mt-1">
-                  {new Date(selectedMonth).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}
+                <p className="text-xs text-gray-400 mt-1 whitespace-nowrap">
+                  {new Date(selectedMonth + '-01').toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}
                 </p>
               </div>
-              <div className="bg-[#2a2a2a] rounded-lg p-4">
-                <p className="text-xs text-gray-400 mb-1">Monthly Budget</p>
-                <h3 className="text-2xl font-bold text-blue-400">
+              <div className="bg-[#2a2a2a] rounded-lg p-3 sm:p-4 min-w-0">
+                <p className="text-xs text-gray-400 mb-1 whitespace-nowrap">Monthly Budget</p>
+                <h3 className="text-lg sm:text-2xl font-bold text-blue-400 whitespace-nowrap overflow-hidden text-ellipsis">
                   {formatCurrency(totalIncome)}
                 </h3>
-                <p className="text-xs text-gray-500 mt-1">Total Income</p>
+                <p className="text-xs text-gray-400 mt-1 whitespace-nowrap">Total Income</p>
               </div>
-              <div className="bg-[#2a2a2a] rounded-lg p-4">
-                <p className="text-xs text-gray-400 mb-1">Total Expenses</p>
-                <h3 className="text-2xl font-bold text-red-400">
+              <div className="bg-[#2a2a2a] rounded-lg p-3 sm:p-4 min-w-0">
+                <p className="text-xs text-gray-400 mb-1 whitespace-nowrap">Total Expenses</p>
+                <h3 className="text-lg sm:text-2xl font-bold text-red-400 whitespace-nowrap overflow-hidden text-ellipsis">
                   {formatCurrency(totalExpenses)}
                 </h3>
-                <p className="text-xs text-gray-500 mt-1">This Month</p>
+                <p className="text-xs text-gray-400 mt-1 whitespace-nowrap">This Month</p>
               </div>
-              <div className="bg-[#2a2a2a] rounded-lg p-4">
-                <p className="text-xs text-gray-400 mb-1">Savings Goal</p>
-                <h3 className="text-2xl font-bold text-purple-400">
+              <div className="bg-[#2a2a2a] rounded-lg p-3 sm:p-4 min-w-0">
+                <p className="text-xs text-gray-400 mb-1 whitespace-nowrap">Savings Goal</p>
+                <h3 className="text-lg sm:text-2xl font-bold text-purple-400 whitespace-nowrap overflow-hidden text-ellipsis">
                   {formatCurrency(savingsGoal)}
                 </h3>
-                <p className="text-xs text-gray-500 mt-1">Target</p>
+                <p className="text-xs text-gray-400 mt-1 whitespace-nowrap">Target</p>
               </div>
             </div>
 
             {/* Budget Breakdown */}
             <div className="border-t border-gray-800 pt-6">
-              <p className="text-sm text-gray-400 mb-4">Budget Breakdown</p>
+              <p className="text-sm text-gray-400 mb-4 whitespace-nowrap">Budget Breakdown</p>
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 rounded-full bg-purple-600"></div>
-                    <span className="text-sm text-gray-300">Savings</span>
+                    <div className="w-3 h-3 rounded-full bg-purple-600 flex-shrink-0"></div>
+                    <span className="text-sm text-gray-300 whitespace-nowrap">Savings</span>
                   </div>
-                  <span className="text-sm font-semibold text-white">{formatCurrency(savingsGoal)}</span>
+                  <span className="text-sm font-semibold text-white whitespace-nowrap">{formatCurrency(savingsGoal)}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 rounded-full bg-blue-600"></div>
-                    <span className="text-sm text-gray-300">Expenses</span>
+                    <div className="w-3 h-3 rounded-full bg-blue-600 flex-shrink-0"></div>
+                    <span className="text-sm text-gray-300 whitespace-nowrap">Expenses</span>
                   </div>
-                  <span className="text-sm font-semibold text-white">{formatCurrency(totalExpenses)}</span>
+                  <span className="text-sm font-semibold text-white whitespace-nowrap">{formatCurrency(totalExpenses)}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 rounded-full bg-gray-500"></div>
-                    <span className="text-sm text-gray-300">Left to budget</span>
+                    <div className="w-3 h-3 rounded-full bg-gray-500 flex-shrink-0"></div>
+                    <span className="text-sm text-gray-300 whitespace-nowrap">Left to budget</span>
                   </div>
-                  <span className="text-sm font-semibold text-white">{formatCurrency(Math.max(0, leftToBudget))}</span>
+                  <span className="text-sm font-semibold text-white whitespace-nowrap">{formatCurrency(Math.max(0, leftToBudget))}</span>
                 </div>
               </div>
               <Link
@@ -291,10 +291,10 @@ const NewDashboard = () => {
 
         {/* Top Right - Budget Overview with Stacked Bar Chart */}
         <div className="lg:col-span-7">
-          <div className="bg-[#252525] rounded-xl p-6 border border-gray-800">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-lg font-semibold text-white">Budget Overview</h3>
-              <div className="flex space-x-2">
+          <div className="bg-[#252525] rounded-xl p-4 sm:p-6 border border-gray-800 overflow-hidden" style={{ width: '100%', maxWidth: '100%' }}>
+            <div className="flex justify-between items-center mb-6 flex-wrap gap-3">
+              <h3 className="text-base sm:text-lg font-semibold text-white whitespace-nowrap">Budget Overview</h3>
+              <div className="flex space-x-2 flex-wrap">
                 <button
                   onClick={() => setBudgetOverviewPeriod('lastyear')}
                   className={`px-3 py-1.5 text-xs rounded-lg transition-colors ${
@@ -329,30 +329,30 @@ const NewDashboard = () => {
             </div>
             
             {/* Key Metrics */}
-            <div className="grid grid-cols-3 gap-4 mb-8">
-              <div className="bg-[#2a2a2a] rounded-lg p-5 min-h-[100px]">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-sm font-medium text-gray-300">Income</span>
-                  <svg className="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-6 sm:mb-8">
+              <div className="bg-[#2a2a2a] rounded-lg p-3 sm:p-5 min-h-[80px] sm:min-h-[100px] min-w-0">
+                <div className="flex items-center justify-between mb-2 sm:mb-3">
+                  <span className="text-xs sm:text-sm font-medium text-gray-300 whitespace-nowrap">Income</span>
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </div>
-                <div className="text-xl font-bold text-white mb-1">{formatCurrency(totalIncome)}</div>
-                <div className="text-xs text-green-400">+5%</div>
+                <div className="text-base sm:text-xl font-bold text-white mb-1 whitespace-nowrap overflow-hidden text-ellipsis">{formatCurrency(totalIncome)}</div>
+                <div className="text-xs text-green-400 whitespace-nowrap">+5%</div>
               </div>
-              <div className="bg-[#2a2a2a] rounded-lg p-5 min-h-[100px]">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-sm font-medium text-gray-300">Expenses</span>
-                  <svg className="w-4 h-4 text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+              <div className="bg-[#2a2a2a] rounded-lg p-3 sm:p-5 min-h-[80px] sm:min-h-[100px] min-w-0">
+                <div className="flex items-center justify-between mb-2 sm:mb-3">
+                  <span className="text-xs sm:text-sm font-medium text-gray-300 whitespace-nowrap">Expenses</span>
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4 text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l-7-7 7 7" />
                   </svg>
                 </div>
-                <div className="text-xl font-bold text-white mb-1">{formatCurrency(totalExpenses)}</div>
-                <div className="text-xs text-red-400">-3%</div>
+                <div className="text-base sm:text-xl font-bold text-white mb-1 whitespace-nowrap overflow-hidden text-ellipsis">{formatCurrency(totalExpenses)}</div>
+                <div className="text-xs text-red-400 whitespace-nowrap">-3%</div>
               </div>
-              <div className="bg-[#2a2a2a] rounded-lg p-5 min-h-[100px]">
-                <span className="text-sm font-medium text-gray-300 block mb-3">Scheduled</span>
-                <div className="text-xl font-bold text-white">{formatCurrency(savingsGoal)}</div>
+              <div className="bg-[#2a2a2a] rounded-lg p-3 sm:p-5 min-h-[80px] sm:min-h-[100px] min-w-0">
+                <span className="text-xs sm:text-sm font-medium text-gray-300 block mb-2 sm:mb-3 whitespace-nowrap">Scheduled</span>
+                <div className="text-base sm:text-xl font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">{formatCurrency(savingsGoal)}</div>
               </div>
             </div>
             
@@ -379,13 +379,13 @@ const NewDashboard = () => {
         
         {/* Bottom Left - Spending Summary */}
         <div className="lg:col-span-6">
-          <div className="bg-[#252525] rounded-xl p-6 border border-gray-800">
+          <div className="bg-[#252525] rounded-xl p-4 sm:p-6 border border-gray-800 overflow-hidden" style={{ width: '100%', maxWidth: '100%' }}>
             <div className="flex justify-between items-center mb-6">
-              <div className="flex items-center space-x-2">
-                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="flex items-center space-x-2 min-w-0">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <h3 className="text-lg font-semibold text-white">Spending Summary</h3>
+                <h3 className="text-base sm:text-lg font-semibold text-white break-words" style={{ wordBreak: 'break-word' }}>Spending Summary</h3>
               </div>
             </div>
             
@@ -393,8 +393,8 @@ const NewDashboard = () => {
             <div className="flex flex-col items-center justify-center">
               <ExpensePieChart categories={summary?.categories || []} total={totalExpenses} />
               <div className="mt-6 text-center">
-                <p className="text-sm uppercase text-gray-400 font-medium mb-2 tracking-wide">Total Spent</p>
-                <p className="text-2xl font-bold text-white">
+                <p className="text-sm uppercase text-gray-400 font-medium mb-2 tracking-wide whitespace-nowrap">Total Spent</p>
+                <p className="text-2xl font-bold text-white whitespace-nowrap">
                   {formatCurrency(totalExpenses)}
                 </p>
               </div>
@@ -404,14 +404,14 @@ const NewDashboard = () => {
         
         {/* Bottom Right - Recent Transactions */}
         <div className="lg:col-span-6">
-          <div className="bg-[#252525] rounded-xl border border-gray-800 overflow-hidden">
-            <div className="p-6 border-b border-gray-800">
-              <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold text-white">Recent Transactions</h3>
-                <div className="flex space-x-2">
+          <div className="bg-[#252525] rounded-xl border border-gray-800 overflow-hidden" style={{ width: '100%', maxWidth: '100%' }}>
+            <div className="p-4 sm:p-6 border-b border-gray-800">
+              <div className="flex justify-between items-center flex-wrap gap-2">
+                <h3 className="text-base sm:text-lg font-semibold text-white break-words" style={{ wordBreak: 'break-word' }}>Recent Transactions</h3>
+                <div className="flex space-x-2 flex-shrink-0">
                   <Link
                     to="/expenses"
-                    className="px-3 py-1.5 text-xs bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className="px-2 sm:px-3 py-1 sm:py-1.5 text-xs bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
                   >
                     + Add
                   </Link>
@@ -438,7 +438,7 @@ const NewDashboard = () => {
                             <div className="text-xs text-gray-400">{new Date(tx.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
                           </div>
                         </div>
-                        <div className={`text-sm font-semibold ${tx.amount >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        <div className={`text-sm font-semibold whitespace-nowrap ${tx.amount >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                           {tx.amount >= 0 ? '+' : ''}{formatCurrency(Math.abs(tx.amount))}
                         </div>
                       </div>

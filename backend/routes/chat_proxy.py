@@ -41,7 +41,8 @@ async def _forward_to_gemini(prompt: str) -> str:
         return "I apologize, but the AI service is currently unavailable. Please configure GEMINI_API_KEY in your environment to enable chat functionality."
 
     # Optimized Gemini proxy for faster, shorter responses
-    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+    # Use gemini-1.5-flash (or gemini-pro) - gemini-2.5-flash may not exist
+    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
     params = {"key": api_key}
     
     # Add system instruction for concise responses
@@ -66,10 +67,21 @@ async def _forward_to_gemini(prompt: str) -> str:
             if resp.status_code != 200:
                 # Truncate error message to avoid issues with very long responses
                 error_detail = resp.text[:500] if len(resp.text) > 500 else resp.text
+                try:
+                    error_json = resp.json()
+                    if "error" in error_json:
+                        error_detail = error_json.get("error", {}).get("message", error_detail)
+                except:
+                    pass
                 raise HTTPException(status_code=resp.status_code, detail=f"Gemini API error: {error_detail}")
             
             data = resp.json()
             try:
+                # Check if response has candidates
+                if "candidates" not in data or not data.get("candidates"):
+                    error_msg = data.get("error", {}).get("message", "No response generated")
+                    raise HTTPException(status_code=500, detail=f"Gemini API returned no candidates: {error_msg}")
+                
                 response_text = data["candidates"][0]["content"]["parts"][0]["text"]
                 # Truncate response if it's still too long (fallback safety)
                 if len(response_text) > 500:
@@ -77,13 +89,25 @@ async def _forward_to_gemini(prompt: str) -> str:
                 return response_text
             except (KeyError, IndexError) as e:
                 # Better error handling for response parsing
-                raise HTTPException(status_code=500, detail=f"Failed to parse Gemini response: {str(e)}")
+                import traceback
+                print(f"Error parsing Gemini response: {traceback.format_exc()}")
+                print(f"Response data: {data}")
+                error_msg = str(e) if str(e) else f"KeyError/IndexError: {type(e).__name__}"
+                raise HTTPException(status_code=500, detail=f"Failed to parse Gemini response: {error_msg}")
+    except HTTPException:
+        # Re-raise HTTPException as-is
+        raise
     except httpx.TimeoutException:
-        raise HTTPException(status_code=500, detail="Gemini API request timed out")
+        raise HTTPException(status_code=500, detail="Gemini API request timed out after 15 seconds")
     except httpx.RequestError as e:
-        raise HTTPException(status_code=500, detail=f"Network error: {str(e)}")
+        error_msg = str(e) if str(e) else "Network connection error"
+        raise HTTPException(status_code=500, detail=f"Network error connecting to Gemini API: {error_msg}")
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
+        import traceback
+        error_trace = traceback.format_exc()
+        print(f"Unexpected error in _forward_to_gemini: {error_trace}")
+        error_msg = str(e) if str(e) else f"{type(e).__name__} occurred"
+        raise HTTPException(status_code=500, detail=f"Unexpected error calling Gemini API: {error_msg}")
 
 
 @router.post("/chat", response_model=ChatResponse)
@@ -112,6 +136,7 @@ async def chat_endpoint(req: ChatRequest, current_user = Depends(get_current_use
             reply=reply,
         )
     except HTTPException:
+        # Re-raise HTTPException as-is (don't wrap it)
         raise
     except Exception as e:
         # Log the full error for debugging
@@ -119,8 +144,11 @@ async def chat_endpoint(req: ChatRequest, current_user = Depends(get_current_use
         error_trace = traceback.format_exc()
         print(f"Chat endpoint error: {error_trace}")
         
-        # Truncate error message to avoid issues with very long error details
-        error_msg = str(e)[:500] if len(str(e)) > 500 else str(e)
+        # Get a meaningful error message
+        error_msg = str(e) if str(e) else f"{type(e).__name__} occurred"
+        if len(error_msg) > 500:
+            error_msg = error_msg[:500]
+        
         raise HTTPException(status_code=500, detail=f"Chat endpoint error: {error_msg}")
 
 

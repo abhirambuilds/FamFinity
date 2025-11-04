@@ -27,12 +27,13 @@ const AppLayout = ({ children, user }) => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <div className="flex h-screen bg-[#1a1a1a] overflow-hidden">
+    <div className="flex h-screen bg-[#1a1a1a] overflow-hidden" style={{ width: '100%', maxWidth: '100vw' }}>
       {/* Sidebar */}
       <div
         className={`${
-          sidebarCollapsed ? 'w-20' : 'w-64'
-        } bg-[#1f1f1f] text-white flex flex-col transition-all duration-300 border-r border-gray-800`}
+          sidebarCollapsed ? 'w-16 sm:w-20' : 'w-56 sm:w-64'
+        } bg-[#1f1f1f] text-white flex flex-col transition-all duration-300 border-r border-gray-800 flex-shrink-0 overflow-x-hidden`}
+        style={{ maxWidth: '100%' }}
       >
         {/* Logo */}
         <div className="flex items-center justify-between p-6 border-b border-gray-800">
@@ -111,18 +112,18 @@ const AppLayout = ({ children, user }) => {
       <div className="flex-1 flex flex-col overflow-hidden bg-[#1a1a1a]">
         {/* Top Bar */}
         <header className="bg-[#1a1a1a] border-b border-gray-800">
-          <div className="px-6 py-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-2xl font-bold text-white">
+          <div className="px-4 sm:px-6 py-4">
+            <div className="flex items-center justify-between flex-wrap gap-4">
+              <div className="min-w-0 flex-1">
+                <h1 className="text-xl sm:text-2xl font-bold text-white break-words whitespace-nowrap overflow-hidden text-ellipsis" style={{ wordBreak: 'keep-all' }}>
                   {navigation.find(n => n.path === location.pathname)?.name || 'FamFinity'}
                 </h1>
-                <p className="text-sm text-gray-400 mt-1">
+                <p className="text-sm text-gray-400 mt-1 break-words">
                   Welcome back, {user?.name || 'User'}
                 </p>
               </div>
-              <div className="flex items-center space-x-4">
-                <div className="text-sm text-gray-400">
+              <div className="flex items-center space-x-4 flex-shrink-0">
+                <div className="text-xs sm:text-sm text-gray-400 whitespace-nowrap">
                   {new Date().toLocaleDateString('en-IN', {
                     day: 'numeric',
                     month: 'long',
@@ -135,8 +136,8 @@ const AppLayout = ({ children, user }) => {
         </header>
 
         {/* Content Area */}
-        <main className="flex-1 overflow-y-auto bg-[#1a1a1a]">
-          <div className="p-6">
+        <main className="flex-1 overflow-y-auto bg-[#1a1a1a] overflow-x-hidden" style={{ width: '100%', maxWidth: '100%' }}>
+          <div className="p-4 sm:p-6" style={{ width: '100%', maxWidth: '100%', boxSizing: 'border-box' }}>
             {children}
           </div>
         </main>

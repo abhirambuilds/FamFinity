@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../assets/logo-mark.svg';
 import HeroGraph from '../assets/hero-graph.svg';
@@ -7,6 +7,132 @@ import DashboardPreview from '../assets/dashboard-preview.png';
 
 const Home = () => {
   const [openFaq, setOpenFaq] = useState(null);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [showInstallButton, setShowInstallButton] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handler = (e) => {
+      // Prevent the mini-infobar from appearing on mobile
+      e.preventDefault();
+      // Stash the event so it can be triggered later
+      setDeferredPrompt(e);
+      setShowInstallButton(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handler);
+
+    // Check if app is already installed
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      setShowInstallButton(false);
+    } else {
+      // Show install button by default (will work for iOS or show instructions)
+      setShowInstallButton(true);
+    }
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handler);
+    };
+  }, []);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isMobileMenuOpen && !event.target.closest('nav')) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    // Prevent body scroll when menu is open
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    if (isMobileMenuOpen) {
+      document.addEventListener('click', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) {
+      // Detect platform and browser
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      const isAndroid = /Android/.test(navigator.userAgent);
+      const isSamsungBrowser = /SamsungBrowser/.test(navigator.userAgent);
+      const isChrome = /Chrome/.test(navigator.userAgent) && !isSamsungBrowser;
+      const isMobile = /Mobile|Android|iPhone|iPad/.test(navigator.userAgent);
+      
+      let instructions = '';
+      
+      if (isIOS) {
+        instructions = 'To install FamFinity on your iPhone:\n\n1. Tap the Share button (square with arrow) at the bottom\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add" to confirm\n\nAfter installation, you can open FamFinity from your home screen!';
+      } else if (isAndroid) {
+        if (isSamsungBrowser) {
+          instructions = 'To install FamFinity on your Samsung device:\n\n1. Tap the menu (three dots) at the bottom right\n2. Tap "Add page to" or "Install app"\n3. Tap "Add to Home screen" or "Install"\n\nAlternatively, you may see an install banner at the top - tap it!';
+        } else if (isChrome) {
+          instructions = 'To install FamFinity on Android:\n\n1. Look for the install banner at the top of your browser\n2. Or tap the menu (three dots) → "Install app" or "Add to Home screen"\n3. Tap "Install" to confirm\n\nAfter installation, you can open FamFinity from your home screen!';
+        } else {
+          instructions = 'To install FamFinity on your Android device:\n\n1. Tap the menu (three dots) in your browser\n2. Look for "Add to Home screen" or "Install app"\n3. Tap it and confirm the installation\n\nAfter installation, you can open FamFinity from your home screen!';
+        }
+      } else if (isMobile) {
+        instructions = 'To install FamFinity:\n\n1. Look for the browser\'s menu or settings\n2. Find "Add to Home Screen" or "Install App"\n3. Follow the prompts to install\n\nAfter installation, you can open FamFinity from your home screen!';
+      } else {
+        // Desktop browser
+        const isChromeDesktop = /Chrome/.test(navigator.userAgent) && !isMobile;
+        const isEdge = /Edg/.test(navigator.userAgent);
+        const isFirefox = /Firefox/.test(navigator.userAgent);
+        
+        if (isChromeDesktop || isEdge) {
+          instructions = 'To install FamFinity on your computer:\n\n1. Look for the install icon (⊕) in your browser\'s address bar\n2. Click it and select "Install"\n3. Or use the browser menu → "Install FamFinity"\n\nAfter installation, FamFinity will open as a standalone app!';
+        } else if (isFirefox) {
+          instructions = 'To install FamFinity on Firefox:\n\n1. Click the menu (three lines) → "More Tools"\n2. Select "Install Site as App" or use the install icon in the address bar\n3. Follow the prompts to install\n\nAfter installation, FamFinity will open as a standalone app!';
+        } else {
+          instructions = 'To install FamFinity:\n\n1. Look for an install icon in your browser\'s address bar\n2. Or check your browser menu for "Install" or "Add to Home Screen"\n3. Follow the prompts to install\n\nAfter installation, FamFinity will be available as an app!';
+        }
+      }
+      
+      alert(instructions);
+      return;
+    }
+
+    try {
+      // Show the install prompt
+      await deferredPrompt.prompt();
+
+      // Wait for the user to respond to the prompt
+      const { outcome } = await deferredPrompt.userChoice;
+
+      if (outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+        // Optionally show a success message
+        // alert('FamFinity is being installed! Check your home screen or apps menu.');
+      } else {
+        console.log('User dismissed the install prompt');
+      }
+
+      // Clear the deferredPrompt
+      setDeferredPrompt(null);
+      setShowInstallButton(false);
+    } catch (error) {
+      console.error('Error showing install prompt:', error);
+      // Fallback if prompt fails
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      if (isIOS) {
+        alert('To install FamFinity on your iPhone:\n\n1. Tap the Share button (square with arrow) at the bottom\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add" to confirm');
+      } else {
+        alert('Please check your browser menu for "Add to Home Screen" or "Install App" option.');
+      }
+    }
+  };
 
   const toggleFaq = (index) => {
     setOpenFaq(openFaq === index ? null : index);
@@ -40,10 +166,10 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#120b25' }}>
+    <div className="min-h-screen overflow-x-hidden" style={{ backgroundColor: '#120b25', width: '100%', maxWidth: '100vw' }}>
       {/* Navigation */}
       <nav className="sticky top-0 z-50" style={{ backgroundColor: '#120b25' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative" style={{ width: '100%', maxWidth: '100%' }}>
           <div className="flex justify-between items-center h-20">
             <div className="flex items-center flex-shrink-0">
               <div className="w-10 h-10 mr-3 flex items-center justify-center">
@@ -52,7 +178,7 @@ const Home = () => {
                   <path d="M8 28C8 28 12 32 20 32C28 32 32 28 32 28" stroke="#c2f52f" strokeWidth="2.5" strokeLinecap="round"/>
                 </svg>
               </div>
-              <Link to="/" className="text-2xl font-medium text-white" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-0.5px' }}>
+              <Link to="/" className="text-xl sm:text-2xl font-medium text-white" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-0.5px' }}>
                 FamFinity
               </Link>
             </div>
@@ -70,31 +196,98 @@ const Home = () => {
             </div>
             {/* Mobile menu button */}
             <div className="md:hidden">
-              <button className="text-white">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
+              <button 
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="text-white p-2 touch-manipulation"
+                aria-label="Toggle menu"
+                style={{ minWidth: '44px', minHeight: '44px' }}
+              >
+                {isMobileMenuOpen ? (
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                ) : (
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                )}
               </button>
             </div>
           </div>
+          
+          {/* Mobile Menu */}
+          {isMobileMenuOpen && (
+            <div className="md:hidden fixed top-20 left-0 right-0 w-full z-50 max-h-[calc(100vh-5rem)] overflow-y-auto" style={{ backgroundColor: '#120b25', borderTop: '1px solid #221e2f' }}>
+              <div className="flex flex-col px-4 py-4 space-y-3">
+                <Link 
+                  to="/" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-white hover:text-white/80 font-medium transition-colors py-2 px-4 rounded-lg hover:bg-white/5 touch-manipulation"
+                  style={{ fontFamily: '"Inter Tight", sans-serif', minHeight: '44px', display: 'flex', alignItems: 'center' }}
+                >
+                  Home
+                </Link>
+                <Link 
+                  to="/about"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-white hover:text-white/80 font-medium transition-colors py-2 px-4 rounded-lg hover:bg-white/5 touch-manipulation"
+                  style={{ fontFamily: '"Inter Tight", sans-serif', minHeight: '44px', display: 'flex', alignItems: 'center' }}
+                >
+                  About
+                </Link>
+                <Link 
+                  to="/features"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-white hover:text-white/80 font-medium transition-colors py-2 px-4 rounded-lg hover:bg-white/5 touch-manipulation"
+                  style={{ fontFamily: '"Inter Tight", sans-serif', minHeight: '44px', display: 'flex', alignItems: 'center' }}
+                >
+                  Features
+                </Link>
+                <Link 
+                  to="/contact"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-white hover:text-white/80 font-medium transition-colors py-2 px-4 rounded-lg hover:bg-white/5 touch-manipulation"
+                  style={{ fontFamily: '"Inter Tight", sans-serif', minHeight: '44px', display: 'flex', alignItems: 'center' }}
+                >
+                  Contact
+                </Link>
+                <Link 
+                  to="/signin"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-white hover:text-white/80 font-medium transition-colors py-2 px-4 rounded-lg hover:bg-white/5 touch-manipulation"
+                  style={{ fontFamily: '"Inter Tight", sans-serif', minHeight: '44px', display: 'flex', alignItems: 'center' }}
+                >
+                  Login
+                </Link>
+                <Link 
+                  to="/signup"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="px-5 py-2.5 rounded-lg font-medium transition-all duration-300 text-sm text-center touch-manipulation"
+                  style={{ backgroundColor: '#c2f52f', color: '#120b25', fontFamily: '"Inter Tight", sans-serif', minHeight: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                >
+                  Get Started
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="py-20 lg:py-32" style={{ backgroundColor: '#120b25' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-6xl font-medium text-white leading-tight mb-6" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-2px', lineHeight: '120%' }}>
+      <section className="py-20 lg:py-32 overflow-x-hidden" style={{ backgroundColor: '#120b25', width: '100%', maxWidth: '100vw' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ width: '100%', maxWidth: '100%' }}>
+          <div className="text-center max-w-4xl mx-auto" style={{ width: '100%' }}>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-medium text-white leading-tight mb-6 px-2" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-2px', lineHeight: '120%', wordWrap: 'break-word' }}>
               The only app that gets your money into shape
                 </h1>
-            <p className="text-xl mb-10 max-w-2xl mx-auto" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', lineHeight: '1.7' }}>
+            <p className="text-lg sm:text-xl mb-10 max-w-2xl mx-auto px-4" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', lineHeight: '1.7', wordWrap: 'break-word' }}>
                 Manage money on the go in the app. Take complete control of all your cash expenses, bank accounts, credit cards, and financial goals with smart AI-powered insights and beautiful analytics. Whether you're tracking daily expenses, planning for your child's education, or saving for that dream vacation, FamFinity makes financial management simple, intuitive, and stress-free for the entire family.
                 </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full sm:w-auto">
                     <Link
                       to="/signup"
-                className="inline-flex items-center justify-center px-8 py-4 rounded-lg font-medium transition-all duration-300"
-                style={{ backgroundColor: '#6246e9', color: 'white' }}
+                className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-medium transition-all duration-300 w-full sm:w-auto touch-manipulation"
+                style={{ backgroundColor: '#6246e9', color: 'white', minHeight: '44px' }}
                     >
                 <svg className="mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -103,23 +296,43 @@ const Home = () => {
                     </Link>
                     <Link
                       to="/features"
-                className="inline-flex items-center justify-center px-8 py-4 border-2 rounded-lg font-medium hover:opacity-80 transition-all duration-300"
-                style={{ borderColor: '#221e2f', color: 'white', backgroundColor: 'transparent' }}
+                className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 border-2 rounded-lg font-medium hover:opacity-80 transition-all duration-300 w-full sm:w-auto touch-manipulation"
+                style={{ borderColor: '#221e2f', color: 'white', backgroundColor: 'transparent', minHeight: '44px' }}
                     >
                   Learn More
                     </Link>
+                    {showInstallButton && (
+                      <button
+                        onClick={handleInstallClick}
+                        className="inline-flex items-center justify-center px-6 py-3 sm:py-4 rounded-lg font-medium transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95 touch-manipulation w-full sm:w-auto"
+                        style={{ 
+                          backgroundColor: '#c2f52f', 
+                          color: '#120b25', 
+                          minHeight: '44px',
+                          border: 'none',
+                          cursor: 'pointer',
+                          fontWeight: '600'
+                        }}
+                        aria-label="Install FamFinity App"
+                      >
+                        <svg className="mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        <span className="whitespace-nowrap" style={{ fontFamily: '"Inter Tight", sans-serif' }}>Install App</span>
+                      </button>
+                    )}
               </div>
             </div>
           </div>
       </section>
 
       {/* Hero Image Section - Dashboard Mockup */}
-      <section className="py-16 -mt-20 relative z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 -mt-20 relative z-10 overflow-x-hidden" style={{ width: '100%', maxWidth: '100vw' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ width: '100%', maxWidth: '100%' }}>
           <div className="flex justify-center">
-            <div className="max-w-6xl w-full rounded-3xl overflow-hidden shadow-2xl" style={{ backgroundColor: '#f7f9fc' }}>
-              <div className="bg-white rounded-2xl p-4">
-                <img src={DashboardPreview} alt="FamFinity Dashboard" className="w-full h-auto rounded-xl" />
+            <div className="max-w-6xl w-full rounded-3xl overflow-hidden shadow-2xl" style={{ backgroundColor: '#f7f9fc', maxWidth: '100%' }}>
+              <div className="bg-white rounded-2xl p-2 sm:p-4">
+                <img src={DashboardPreview} alt="FamFinity Dashboard" className="w-full h-auto rounded-xl" style={{ maxWidth: '100%', height: 'auto' }} />
               </div>
             </div>
           </div>
@@ -127,24 +340,24 @@ const Home = () => {
       </section>
 
       {/* Trusted By Section */}
-      <section className="py-12" style={{ backgroundColor: '#120b25' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center mb-8 text-lg" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif' }}>
+      <section className="py-12 overflow-x-hidden" style={{ backgroundColor: '#120b25', width: '100%', maxWidth: '100vw' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ width: '100%', maxWidth: '100%' }}>
+          <p className="text-center mb-8 text-base sm:text-lg px-4" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', wordWrap: 'break-word' }}>
             Trusted by 50,000+ families worldwide to manage their finances and achieve their financial goals. Join a community of smart families who have taken control of their financial future.
           </p>
-          <div className="flex flex-wrap justify-center items-center gap-12 opacity-60">
-            <div className="text-xl font-semibold" style={{ color: '#939393', fontFamily: '"Inter Tight", sans-serif' }}>FamFinity</div>
-            <div className="text-xl font-semibold" style={{ color: '#939393', fontFamily: '"Inter Tight", sans-serif' }}>Financial Partners</div>
-            <div className="text-xl font-semibold" style={{ color: '#939393', fontFamily: '"Inter Tight", sans-serif' }}>Bank Alliance</div>
-            <div className="text-xl font-semibold" style={{ color: '#939393', fontFamily: '"Inter Tight", sans-serif' }}>Trusted Advisor</div>
-            <div className="text-xl font-semibold" style={{ color: '#939393', fontFamily: '"Inter Tight", sans-serif' }}>Secure Finance</div>
+          <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-12 opacity-60 px-4">
+            <div className="text-base sm:text-xl font-semibold" style={{ color: '#939393', fontFamily: '"Inter Tight", sans-serif' }}>FamFinity</div>
+            <div className="text-base sm:text-xl font-semibold" style={{ color: '#939393', fontFamily: '"Inter Tight", sans-serif' }}>Financial Partners</div>
+            <div className="text-base sm:text-xl font-semibold" style={{ color: '#939393', fontFamily: '"Inter Tight", sans-serif' }}>Bank Alliance</div>
+            <div className="text-base sm:text-xl font-semibold" style={{ color: '#939393', fontFamily: '"Inter Tight", sans-serif' }}>Trusted Advisor</div>
+            <div className="text-base sm:text-xl font-semibold" style={{ color: '#939393', fontFamily: '"Inter Tight", sans-serif' }}>Secure Finance</div>
         </div>
       </div>
       </section>
 
       {/* Take First Simplifying Your Financial Journey */}
-      <section className="py-20" style={{ backgroundColor: '#120b25' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 overflow-x-hidden" style={{ backgroundColor: '#120b25', width: '100%', maxWidth: '100vw' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ width: '100%', maxWidth: '100%' }}>
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-medium text-white mb-4" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-1.5px', lineHeight: '120%' }}>
               Take First Simplifying Your Financial Journey
@@ -192,8 +405,8 @@ const Home = () => {
       </section>
 
       {/* Achieve Your Financial Goals with Confidence */}
-      <section className="py-20" style={{ backgroundColor: '#120b25' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 overflow-x-hidden" style={{ backgroundColor: '#120b25', width: '100%', maxWidth: '100vw' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ width: '100%', maxWidth: '100%' }}>
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-medium text-white mb-4" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-1.5px', lineHeight: '120%' }}>
               Achieve Your Financial Goals with Confidence
@@ -253,8 +466,8 @@ const Home = () => {
       </section>
 
       {/* Revolutionizing The Way You Manage Money */}
-      <section className="py-20" style={{ backgroundColor: '#120b25' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 overflow-x-hidden" style={{ backgroundColor: '#120b25', width: '100%', maxWidth: '100vw' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ width: '100%', maxWidth: '100%' }}>
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-medium text-white mb-4" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-1.5px', lineHeight: '120%' }}>
               Revolutionizing The Way You Manage Money
@@ -309,8 +522,8 @@ const Home = () => {
       </section>
 
       {/* Blog Section */}
-      <section className="py-20" style={{ backgroundColor: '#120b25' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 overflow-x-hidden" style={{ backgroundColor: '#120b25', width: '100%', maxWidth: '100vw' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ width: '100%', maxWidth: '100%' }}>
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-medium text-white mb-4" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-1.5px', lineHeight: '120%' }}>
               Seize Financial Mastery with Our All-in-One Solution
@@ -393,8 +606,8 @@ const Home = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20" style={{ backgroundColor: '#120b25' }}>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 overflow-x-hidden" style={{ backgroundColor: '#120b25', width: '100%', maxWidth: '100vw' }}>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" style={{ width: '100%', maxWidth: '100%' }}>
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-medium text-white mb-4" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-1.5px', lineHeight: '120%' }}>
               Quick Answers to Your Financial Queries
@@ -434,8 +647,8 @@ const Home = () => {
       </section>
 
       {/* Integrations Section */}
-      <section className="py-20" style={{ backgroundColor: '#120b25' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 overflow-x-hidden" style={{ backgroundColor: '#120b25', width: '100%', maxWidth: '100vw' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ width: '100%', maxWidth: '100%' }}>
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-medium text-white mb-4" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-1.5px', lineHeight: '120%' }}>
               Seamlessly Links with 5k+ Applications
@@ -455,8 +668,8 @@ const Home = () => {
       </section>
 
       {/* Final CTA */}
-      <section className="py-20" style={{ background: 'linear-gradient(135deg, #6246e9 0%, #4c1fb8 100%)' }}>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="py-20 overflow-x-hidden" style={{ background: 'linear-gradient(135deg, #6246e9 0%, #4c1fb8 100%)', width: '100%', maxWidth: '100vw' }}>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center" style={{ width: '100%', maxWidth: '100%' }}>
           <h2 className="text-4xl md:text-5xl font-medium text-white mb-6" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-1.5px', lineHeight: '120%' }}>
             Start Your Journey with FamFinity
           </h2>
@@ -477,8 +690,8 @@ const Home = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-16" style={{ backgroundColor: '#120b25' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <footer className="py-16 overflow-x-hidden" style={{ backgroundColor: '#120b25', width: '100%', maxWidth: '100vw' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ width: '100%', maxWidth: '100%' }}>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center mb-4">

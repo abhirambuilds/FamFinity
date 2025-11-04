@@ -8,11 +8,88 @@
 @layer base {
   html {
     font-family: 'Inter', system-ui, sans-serif;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
   }
   
   body {
     /* stylelint-disable-next-line at-rule-no-unknown */
     @apply text-gray-900 antialiased;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+    position: relative;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  /* Prevent horizontal scrolling */
+  html, body {
+    overflow-x: hidden !important;
+    position: relative;
+  }
+  
+  /* Ensure all containers don't overflow */
+  #root {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+  }
+  
+  /* Prevent all sections from overflowing */
+  section, nav, footer, header, main, article, aside {
+    overflow-x: hidden;
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+  
+  /* Ensure images don't cause overflow */
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  /* Prevent flex items from overflowing */
+  .flex {
+    min-width: 0;
+  }
+  
+  /* Ensure text wraps properly */
+  h1, h2, h3, h4, h5, h6, p, span, div {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  /* Prevent long words from breaking layout */
+  * {
+    word-break: break-word;
+  }
+  
+  /* Fix text orientation - prevent vertical text */
+  h1, h2, h3, h4, h5, h6, p, span, div, button, a, label, input, textarea, select {
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+    text-transform: none !important;
+  }
+  
+  /* Ensure proper text wrapping in cards and containers */
+  .bg-\[#252525\], .bg-\[#2a2a2a\], .bg-white, .bg-gray-50 {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  /* Prevent numbers and currency from wrapping */
+  .currency, .number, [class*="text-2xl"], [class*="text-xl"], [class*="text-lg"] {
+    white-space: nowrap;
+  }
+  
+  /* Keep labels and values together on same line */
+  .metric-label, .metric-value {
+    white-space: nowrap;
   }
 }
 
@@ -59,6 +136,90 @@
   
   .backdrop-blur-xs {
     backdrop-filter: blur(2px);
+  }
+}
+
+/* Mobile-specific optimizations for iPhone 15+ and Samsung Galaxy A35 */
+@supports (-webkit-touch-callout: none) {
+  /* iOS Safari specific styles */
+  body {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+  
+  /* Safe area insets for iPhone X and later */
+  body {
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+}
+
+/* Mobile responsive improvements */
+@media (max-width: 428px) {
+  /* iPhone 15 Pro Max width */
+  html {
+    font-size: 16px;
+  }
+  
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Improve touch targets - minimum 44x44px for mobile */
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
+  }
+  
+  input, select, textarea {
+    min-height: 44px;
+  }
+  
+  /* Better spacing for mobile */
+  .container-padding {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@media (max-width: 390px) {
+  /* Samsung Galaxy A35 and smaller devices */
+  html {
+    font-size: 15px;
+  }
+}
+
+/* Prevent text size adjustment on iOS */
+@media screen and (max-width: 768px) {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  
+  /* Better scrolling on mobile */
+  body {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    overflow-x: hidden !important;
+  }
+  
+  /* Prevent pull-to-refresh on overscroll and horizontal scroll */
+  html, body, #root {
+    overscroll-behavior-y: contain;
+    overscroll-behavior-x: none;
+    overflow-x: hidden !important;
+    position: relative;
+    width: 100%;
+    max-width: 100vw;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  .section-padding {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
   }
 }
 

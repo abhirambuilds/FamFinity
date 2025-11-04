@@ -113,11 +113,11 @@ const Budgets = () => {
 
   return (
     <AppLayout user={user}>
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-5xl mx-auto overflow-x-hidden" style={{ width: '100%', maxWidth: '100%' }}>
         {/* Header */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-6 border border-gray-100">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold text-gray-900">Create a Budget</h1>
+        <div className="bg-[#252525] rounded-xl shadow-sm p-4 sm:p-6 mb-4 sm:mb-6 border border-gray-800 overflow-hidden" style={{ width: '100%', maxWidth: '100%' }}>
+          <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+            <h1 className="text-xl sm:text-2xl font-bold text-white break-words" style={{ wordBreak: 'break-word' }}>Create a Budget</h1>
             <button
               onClick={() => navigate('/dashboard')}
               className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900"
@@ -127,7 +127,7 @@ const Budgets = () => {
           </div>
 
           {/* Progress Steps */}
-          <div className="flex items-center justify-center space-x-8 mb-6">
+          <div className="flex items-center justify-center space-x-4 sm:space-x-8 mb-6 flex-wrap">
             <StepIndicator
               step={1}
               label="Income"
@@ -135,8 +135,8 @@ const Budgets = () => {
               completed={step > 1}
               onClick={() => setStep(1)}
             />
-            <div className="w-24 h-1 bg-gray-200">
-              <div className={`h-1 ${step > 1 ? 'bg-purple-600' : 'bg-gray-200'} transition-all`}></div>
+            <div className="w-12 sm:w-24 h-1 bg-gray-700">
+              <div className={`h-1 ${step > 1 ? 'bg-purple-600' : 'bg-gray-700'} transition-all`}></div>
             </div>
             <StepIndicator
               step={2}
@@ -145,8 +145,8 @@ const Budgets = () => {
               completed={step > 2}
               onClick={() => setStep(2)}
             />
-            <div className="w-24 h-1 bg-gray-200">
-              <div className={`h-1 ${step > 2 ? 'bg-purple-600' : 'bg-gray-200'} transition-all`}></div>
+            <div className="w-12 sm:w-24 h-1 bg-gray-700">
+              <div className={`h-1 ${step > 2 ? 'bg-purple-600' : 'bg-gray-700'} transition-all`}></div>
             </div>
             <StepIndicator
               step={3}
@@ -172,12 +172,12 @@ const Budgets = () => {
         </div>
 
         {/* Step Content */}
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <div className="bg-[#252525] rounded-xl shadow-sm p-4 sm:p-6 border border-gray-800 overflow-hidden" style={{ width: '100%', maxWidth: '100%' }}>
           {step === 1 && (
             <div>
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">Step 1. Enter your monthly income</h2>
-              <div className="max-w-md">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+              <h2 className="text-lg sm:text-xl font-semibold text-white mb-6 break-words" style={{ wordBreak: 'break-word' }}>Step 1. Enter your monthly income</h2>
+              <div className="max-w-md w-full">
+                <label className="block text-sm font-medium text-gray-300 mb-2 break-words" style={{ wordBreak: 'break-word' }}>
                   Monthly Income
                 </label>
                 <div className="relative">
@@ -277,24 +277,24 @@ const Budgets = () => {
                   </div>
                 ))}
 
-                <div className="mt-6 p-4 bg-purple-50 rounded-lg border border-purple-200">
-                  <h3 className="font-semibold text-purple-900 mb-3">Budget Summary</h3>
+                  <div className="mt-6 p-4 bg-purple-900/30 rounded-lg border border-purple-700/50">
+                  <h3 className="font-semibold text-purple-300 mb-3 whitespace-nowrap">Budget Summary</h3>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Income:</span>
-                      <span className="font-semibold">{formatCurrency(budgetData.income)}</span>
+                      <span className="text-gray-300 whitespace-nowrap">Income:</span>
+                      <span className="font-semibold text-white whitespace-nowrap">{formatCurrency(budgetData.income)}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Savings Goal:</span>
-                      <span className="font-semibold text-green-600">-{formatCurrency(budgetData.savings_goal)}</span>
+                      <span className="text-gray-300 whitespace-nowrap">Savings Goal:</span>
+                      <span className="font-semibold text-green-400 whitespace-nowrap">-{formatCurrency(budgetData.savings_goal)}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Total Expenses:</span>
-                      <span className="font-semibold text-red-600">-{formatCurrency(totalExpenses)}</span>
+                      <span className="text-gray-300 whitespace-nowrap">Total Expenses:</span>
+                      <span className="font-semibold text-red-400 whitespace-nowrap">-{formatCurrency(totalExpenses)}</span>
                     </div>
-                    <div className="border-t border-purple-300 pt-2 mt-2 flex justify-between">
-                      <span className="font-semibold text-gray-900">Left to Budget:</span>
-                      <span className={`font-bold ${leftToBudget >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    <div className="border-t border-purple-700 pt-2 mt-2 flex justify-between">
+                      <span className="font-semibold text-white whitespace-nowrap">Left to Budget:</span>
+                      <span className={`font-bold whitespace-nowrap ${leftToBudget >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                         {formatCurrency(leftToBudget)}
                       </span>
                     </div>
@@ -322,7 +322,7 @@ const Budgets = () => {
             <button
               onClick={() => setStep(Math.max(1, step - 1))}
               disabled={step === 1}
-              className="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-3 border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               Previous
             </button>
@@ -401,13 +401,13 @@ const StepIndicator = ({ step, label, active, completed, onClick }) => (
         completed
           ? 'bg-purple-600 text-white'
           : active
-          ? 'bg-purple-600 text-white ring-4 ring-purple-200'
-          : 'bg-gray-200 text-gray-500'
+          ? 'bg-purple-600 text-white ring-4 ring-purple-300/50'
+          : 'bg-gray-700 text-gray-400'
       }`}
     >
       {completed ? '✓' : step}
     </div>
-    <span className={`mt-2 text-sm font-medium ${active ? 'text-purple-600' : 'text-gray-500'}`}>
+    <span className={`mt-2 text-sm font-medium whitespace-nowrap ${active ? 'text-purple-400' : 'text-gray-400'}`}>
       {label}
     </span>
   </div>
