@@ -423,7 +423,7 @@ const Expenses = () => {
             </div>
           ) : (
             <>
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto android-scroll-x smooth-scroll-x" style={{ touchAction: 'pan-x pan-y', WebkitOverflowScrolling: 'touch' }}>
                 <table className="w-full min-w-[600px]">
                   <thead className="bg-[#2a2a2a] border-b border-gray-700">
                     <tr>

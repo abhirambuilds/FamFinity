@@ -79,7 +79,7 @@ If you've had PyTorch deployment issues before, use the **NO-TORCH version** (re
 - **If build fails**: Switch to Option A (no-torch)
 
 **If NOT using render.yaml (manual setup):**
-- **Build Command**: `pip install --upgrade pip setuptools wheel && pip install --only-binary=:all: numpy==1.24.3 pandas==2.0.3 && pip install -r requirements-production-no-torch.txt`
+- **Build Command**: `pip install --upgrade pip setuptools wheel && pip install -r requirements-production-no-torch.txt`
 - **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
 
 ### 1.4 Set Environment Variables
@@ -224,18 +224,19 @@ VITE_API_URL=https://your-backend-url.onrender.com
 - ✅ **Solution**: Use `requirements-production-no-torch.txt` instead
 - In Render dashboard:
   1. Go to your service settings
-  2. Change Build Command to: `pip install --upgrade pip setuptools wheel && pip install --only-binary=:all: numpy==1.24.3 pandas==2.0.3 && pip install -r requirements-production-no-torch.txt`
+  2. Change Build Command to: `pip install --upgrade pip setuptools wheel && pip install -r requirements-production-no-torch.txt`
   3. Save and redeploy
 - **What this means**: App works perfectly, just uses baseline models instead of LSTM (99% of features unchanged)
 - **Alternative**: Use the `render-no-torch.yaml` file (rename it to `render.yaml`)
 
-**Pandas Build Fails (Compilation Error):**
-- ✅ **Solution**: Update Build Command to use pre-built wheels
+**Pandas/Numpy Build Fails (Version Error):**
+- ✅ **Solution**: Use compatible versions for Render's Python environment
 - In Render dashboard:
   1. Go to your service settings
-  2. Change Build Command to: `pip install --upgrade pip setuptools wheel && pip install --only-binary=:all: numpy==1.24.3 pandas==2.0.3 && pip install -r requirements-production-no-torch.txt`
+  2. Change Build Command to: `pip install --upgrade pip setuptools wheel && pip install -r requirements-production-no-torch.txt`
   3. Save and redeploy
-- **Why this works**: Forces pip to use pre-built wheels instead of compiling from source
+- **Why this works**: Uses compatible numpy/pandas versions that have pre-built wheels for Render's Python version
+- **Note**: Requirements file has been updated with compatible versions
 - **See**: `PANDAS_FIX.md` for detailed instructions
 
 **Build fails:**

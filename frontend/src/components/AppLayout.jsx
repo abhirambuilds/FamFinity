@@ -136,7 +136,7 @@ const AppLayout = ({ children, user }) => {
         </header>
 
         {/* Content Area */}
-        <main className="flex-1 overflow-y-auto bg-[#1a1a1a] overflow-x-hidden" style={{ width: '100%', maxWidth: '100%' }}>
+        <main className="flex-1 overflow-y-auto bg-[#1a1a1a] overflow-x-auto android-scroll-x smooth-scroll-x" style={{ width: '100%', maxWidth: '100%' }}>
           <div className="p-4 sm:p-6" style={{ width: '100%', maxWidth: '100%', boxSizing: 'border-box' }}>
             {children}
           </div>

@@ -16,7 +16,7 @@ error: metadata-generation-failed
 2. Find **Build Command**
 3. Replace it with:
    ```
-   pip install --upgrade pip setuptools wheel && pip install --only-binary=:all: numpy==1.24.3 pandas==2.0.3 && pip install -r requirements-production-no-torch.txt
+   pip install --upgrade pip setuptools wheel && pip install -r requirements-production-no-torch.txt
    ```
 4. Click **Save Changes**
 5. Click **Manual Deploy** → **Deploy latest commit**
@@ -31,16 +31,20 @@ Just push to GitHub and Render will auto-deploy.
 
 ## Why This Works
 
-1. **Pinned versions**: Uses specific pandas/numpy versions with pre-built wheels
-2. **--only-binary**: Forces pip to use pre-built wheels (no compilation)
-3. **Install order**: Installs numpy and pandas first (as wheels), then other packages
+1. **Compatible versions**: Uses numpy/pandas versions compatible with Render's Python version
+2. **Pre-built wheels**: Requirements file specifies versions with available wheels
+3. **Simple install**: Direct installation without forcing binary-only (pip will use wheels when available)
 
-## Alternative: Use Lighter Versions
+## Alternative: If Still Failing
 
-If still failing, try even lighter versions in Build Command:
-```
-pip install --upgrade pip setuptools wheel && pip install --only-binary=:all: numpy==1.23.5 pandas==1.5.3 && pip install -r requirements-production-no-torch.txt
-```
+If you see version conflicts, check Render's Python version:
+1. Go to Settings → Environment
+2. Check Python version (should be 3.8-3.12)
+3. If Python 3.13+, you may need to specify Python 3.12 in render.yaml:
+   ```yaml
+   env: python
+   pythonVersion: "3.12"
+   ```
 
 ## Verification
 
