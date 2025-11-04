@@ -41,8 +41,8 @@ async def _forward_to_gemini(prompt: str) -> str:
         return "I apologize, but the AI service is currently unavailable. Please configure GEMINI_API_KEY in your environment to enable chat functionality."
 
     # Optimized Gemini proxy for faster, shorter responses
-    # Use gemini-pro with v1beta API (stable model name)
-    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent"
+    # Use gemini-pro with v1 API (stable model and API version)
+    url = "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent"
     params = {"key": api_key}
     
     # Prepend system instruction to the prompt (v1beta doesn't support systemInstruction field)

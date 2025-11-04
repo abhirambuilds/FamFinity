@@ -163,7 +163,7 @@ async def _forward_to_gemini_for_advisor(prompt: str) -> str:
     if not api_key:
         return None  # Return None if API key is not set (will fall back to rule-based)
     
-    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent"
+    url = "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent"
     params = {"key": api_key}
     
     # Prepend system instruction to the prompt (v1beta doesn't support systemInstruction field)
