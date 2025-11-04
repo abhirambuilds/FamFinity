@@ -157,6 +157,10 @@ This project can be deployed to production using:
 
 For detailed deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md).
 
+### Frontend Deployment (Vercel)
+
+**Note**: This project uses Vercel's standard `@vercel/static-build` builder, **not** Build Output v3. The `vercel.json` configuration automatically publishes the Vite `dist` directory output. We do not use `.vercel/output/static` or custom Build Output v3 paths.
+
 ### Quick Deployment Steps
 
 1. **Backend (Render)**:
@@ -167,7 +171,9 @@ For detailed deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md).
 
 2. **Frontend (Vercel)**:
    - Connect GitHub repository to Vercel
-   - Set root directory to `frontend`
+   - Root directory: leave empty (repo root)
+   - Framework preset: Other
+   - Build/Output/Install commands: leave empty (handled by `vercel.json`)
    - Set `VITE_API_URL` environment variable to your Render backend URL
    - Deploy
 
