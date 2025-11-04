@@ -2,11 +2,16 @@ services:
   - type: web
     name: famfinity-backend
     env: python
-    pythonVersion: "3.12.7"
     rootDir: backend
-    buildCommand: pip install --upgrade pip setuptools wheel && pip install -r requirements-production-no-torch.txt
+    # Do NOT use pythonVersion: - it's ignored by Render!
+    # Use PYTHON_VERSION env var or .python-version file instead
+    buildCommand: >
+      python -m pip install --upgrade pip setuptools wheel &&
+      pip install --no-cache-dir -r requirements-production-no-torch.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_ANON_KEY

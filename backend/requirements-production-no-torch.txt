@@ -23,7 +23,7 @@ pandas>=2.2.0,<2.3.0
 # ML dependencies - WITHOUT PyTorch (fallback to baseline models only)
 # Using versions with pre-built wheels for Render
 scikit-learn>=1.5.0,<1.6.0
-matplotlib>=3.8.0,<3.10.0
+# matplotlib>=3.8.0,<3.10.0  # Uncomment only if you need plotting on server
 joblib>=1.3.0,<1.5.0
 
 # PyTorch is NOT included - LSTM predictions will use baseline models instead
@@ -32,7 +32,7 @@ joblib>=1.3.0,<1.5.0
 # Database migrations
 alembic==1.13.1
 
-# Testing
-pytest==7.4.3
-pytest-asyncio==0.21.1
+# Testing (moved to dev requirements - not needed in production)
+# pytest==7.4.3
+# pytest-asyncio==0.21.1
 
