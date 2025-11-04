@@ -39,6 +39,7 @@ lerna-debug.log*
 dist/
 dist-ssr/
 *.local
+.vercel/output/
 
 # Environment variables
 .env
