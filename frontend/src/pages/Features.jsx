@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Logo from '../assets/logo-mark.svg';
 import HeroGraph from '../assets/hero-graph.svg';
 import AIBrain from '../assets/ai-brain.svg';
+import InstallButton from '../components/InstallButton';
 
 const Features = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -146,10 +147,10 @@ const Features = () => {
       <section className="py-20 lg:py-32" style={{ backgroundColor: '#120b25' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-6xl font-medium text-white leading-tight mb-6" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-2px', lineHeight: '120%' }}>
+            <h1 className="text-5xl md:text-6xl font-medium text-white leading-tight mb-6 px-2" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-2px', lineHeight: '120%', wordWrap: 'break-word', overflowWrap: 'break-word', hyphens: 'auto', WebkitHyphens: 'auto' }}>
               Powerful Features for Your Family
             </h1>
-            <p className="text-xl mb-10 max-w-2xl mx-auto" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', lineHeight: '1.7' }}>
+            <p className="text-xl mb-10 max-w-2xl mx-auto px-4" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', lineHeight: '1.7', wordWrap: 'break-word', overflowWrap: 'break-word', hyphens: 'auto', WebkitHyphens: 'auto' }}>
               Discover what makes FamFinity the perfect financial companion for your family. Everything you need to get your money into shape—from AI-powered expense tracking and smart budgeting to goal setting and investment insights. Our comprehensive suite of features is designed to work seamlessly together, giving you complete control over your family's financial health.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -368,6 +369,11 @@ const Features = () => {
           </div>
         </div>
       </footer>
+
+      {/* Sticky Install Button for Mobile */}
+      <div className="md:hidden fixed bottom-4 right-4 z-50">
+        <InstallButton variant="sticky" />
+      </div>
     </div>
   );
 };

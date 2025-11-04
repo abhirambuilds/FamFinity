@@ -4,6 +4,7 @@ import Logo from '../assets/logo-mark.svg';
 import HeroGraph from '../assets/hero-graph.svg';
 import AIBrain from '../assets/ai-brain.svg';
 import DashboardPreview from '../assets/dashboard-preview.png';
+import InstallButton from '../components/InstallButton';
 
 const Home = () => {
   const [openFaq, setOpenFaq] = useState(null);
@@ -274,51 +275,52 @@ const Home = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="py-20 lg:py-32 overflow-x-hidden" style={{ backgroundColor: '#120b25', width: '100%', maxWidth: '100vw' }}>
+      <section className="py-12 sm:py-16 md:py-20 lg:py-32 overflow-x-hidden" style={{ backgroundColor: '#120b25', width: '100%', maxWidth: '100vw' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ width: '100%', maxWidth: '100%' }}>
           <div className="text-center max-w-4xl mx-auto" style={{ width: '100%' }}>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-medium text-white leading-tight mb-6 px-2" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-2px', lineHeight: '120%', wordWrap: 'break-word' }}>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-white leading-tight mb-4 sm:mb-6 px-2" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-0.02em', wordWrap: 'break-word', overflowWrap: 'break-word', hyphens: 'auto', WebkitHyphens: 'auto' }}>
               The only app that gets your money into shape
                 </h1>
-            <p className="text-lg sm:text-xl mb-10 max-w-2xl mx-auto px-4" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', lineHeight: '1.7', wordWrap: 'break-word' }}>
+            <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 md:mb-10 max-w-2xl mx-auto px-4" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', wordWrap: 'break-word', overflowWrap: 'break-word', hyphens: 'auto', WebkitHyphens: 'auto' }}>
                 Manage money on the go in the app. Take complete control of all your cash expenses, bank accounts, credit cards, and financial goals with smart AI-powered insights and beautiful analytics. Whether you're tracking daily expenses, planning for your child's education, or saving for that dream vacation, FamFinity makes financial management simple, intuitive, and stress-free for the entire family.
                 </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full sm:w-auto">
+            <div className="flex flex-col gap-3 sm:gap-4 justify-center items-center w-full sm:w-auto sm:flex-row">
                     <Link
                       to="/signup"
-                className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-medium transition-all duration-300 w-full sm:w-auto touch-manipulation"
-                style={{ backgroundColor: '#6246e9', color: 'white', minHeight: '44px' }}
+                className="inline-flex items-center justify-center px-5 sm:px-6 md:px-8 py-3 sm:py-3.5 md:py-4 rounded-lg font-medium transition-all duration-300 w-full sm:w-auto touch-manipulation"
+                style={{ backgroundColor: '#6246e9', color: 'white', minHeight: '48px', fontSize: '1rem' }}
                     >
-                <svg className="mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="mr-2 w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
-                Get Started
+                <span style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>Get Started</span>
                     </Link>
                     <Link
                       to="/features"
-                className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 border-2 rounded-lg font-medium hover:opacity-80 transition-all duration-300 w-full sm:w-auto touch-manipulation"
-                style={{ borderColor: '#221e2f', color: 'white', backgroundColor: 'transparent', minHeight: '44px' }}
+                className="inline-flex items-center justify-center px-5 sm:px-6 md:px-8 py-3 sm:py-3.5 md:py-4 border-2 rounded-lg font-medium hover:opacity-80 transition-all duration-300 w-full sm:w-auto touch-manipulation"
+                style={{ borderColor: '#221e2f', color: 'white', backgroundColor: 'transparent', minHeight: '48px', fontSize: '1rem' }}
                     >
-                  Learn More
+                  <span style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>Learn More</span>
                     </Link>
                     {showInstallButton && (
                       <button
                         onClick={handleInstallClick}
-                        className="inline-flex items-center justify-center px-6 py-3 sm:py-4 rounded-lg font-medium transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95 touch-manipulation w-full sm:w-auto"
+                        className="inline-flex items-center justify-center px-5 sm:px-6 md:px-6 py-3 sm:py-3.5 md:py-4 rounded-lg font-medium transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95 touch-manipulation w-full sm:w-auto"
                         style={{ 
                           backgroundColor: '#c2f52f', 
                           color: '#120b25', 
-                          minHeight: '44px',
+                          minHeight: '48px',
                           border: 'none',
                           cursor: 'pointer',
-                          fontWeight: '600'
+                          fontWeight: '600',
+                          fontSize: '1rem'
                         }}
                         aria-label="Install FamFinity App"
                       >
-                        <svg className="mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
+                        <svg className="mr-2 w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                         </svg>
-                        <span className="whitespace-nowrap" style={{ fontFamily: '"Inter Tight", sans-serif' }}>Install App</span>
+                        <span style={{ fontFamily: '"Inter Tight", sans-serif', wordWrap: 'break-word', overflowWrap: 'break-word' }}>Install App</span>
                       </button>
                     )}
               </div>
@@ -754,6 +756,11 @@ const Home = () => {
           </div>
         </div>
       </footer>
+
+      {/* Sticky Install Button for Mobile */}
+      <div className="md:hidden fixed bottom-4 right-4 z-50">
+        <InstallButton variant="sticky" />
+      </div>
     </div>
   );
 };

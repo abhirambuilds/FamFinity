@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../assets/logo-mark.svg';
 import ContactSupport from '../assets/contact-support.svg';
+import InstallButton from '../components/InstallButton';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -164,10 +165,10 @@ const Contact = () => {
       <section className="py-20 lg:py-32" style={{ backgroundColor: '#120b25' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-6xl font-medium text-white leading-tight mb-6" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-2px', lineHeight: '120%' }}>
+            <h1 className="text-5xl md:text-6xl font-medium text-white leading-tight mb-6 px-2" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-2px', lineHeight: '120%', wordWrap: 'break-word', overflowWrap: 'break-word', hyphens: 'auto', WebkitHyphens: 'auto' }}>
               Contact Us
             </h1>
-            <p className="text-xl mb-10 max-w-2xl mx-auto" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', lineHeight: '1.7' }}>
+            <p className="text-xl mb-10 max-w-2xl mx-auto px-4" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', lineHeight: '1.7', wordWrap: 'break-word', overflowWrap: 'break-word', hyphens: 'auto', WebkitHyphens: 'auto' }}>
               Have questions about FamFinity? Need help with your account? Want to share feedback? We'd love to hear from you. Our dedicated support team is here to help you make the most of your financial journey. Send us a message and we'll respond as soon as possible—typically within 24 hours during business days.
             </p>
           </div>
@@ -373,6 +374,11 @@ const Contact = () => {
           </div>
         </div>
       </footer>
+
+      {/* Sticky Install Button for Mobile */}
+      <div className="md:hidden fixed bottom-4 right-4 z-50">
+        <InstallButton variant="sticky" />
+      </div>
     </div>
   );
 };

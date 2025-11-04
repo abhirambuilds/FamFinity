@@ -96,11 +96,38 @@
   h1, h2, h3, h4, h5, h6, p, span, div {
     word-wrap: break-word;
     overflow-wrap: break-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
   }
-  
+
   /* Prevent long words from breaking layout */
   * {
     word-break: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  /* Better text wrapping for mobile - Samsung S23 specific */
+  @media screen and (max-width: 428px) {
+    h1, h2, h3, h4, h5, h6, p, span, div, button, a, label {
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      hyphens: auto !important;
+      -webkit-hyphens: auto !important;
+      word-break: break-word !important;
+      max-width: 100% !important;
+    }
+    
+    /* Ensure text doesn't get cut off */
+    h1, h2, h3, h4, h5, h6 {
+      line-height: 1.2 !important;
+      letter-spacing: -0.5px !important;
+    }
+    
+    /* Prevent text from going to next line mid-word */
+    p, span, div {
+      white-space: normal !important;
+    }
   }
   
   /* Fix text orientation - prevent vertical text */
@@ -200,35 +227,8 @@
   }
 }
 
-/* Mobile responsive improvements */
-@media (max-width: 428px) {
-  /* iPhone 15 Pro Max width */
-  html {
-    font-size: 16px;
-  }
-  
-  body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-  
-  /* Improve touch targets - minimum 44x44px for mobile */
-  button, a {
-    min-height: 44px;
-    min-width: 44px;
-    touch-action: manipulation;
-  }
-  
-  input, select, textarea {
-    min-height: 44px;
-  }
-  
-  /* Better spacing for mobile */
-  .container-padding {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-}
+/* Legacy mobile responsive improvements - now handled above */
+/* This section kept for backward compatibility but optimized above */
 
 /* Android-specific spacing fixes */
 @media screen and (max-width: 768px) {
@@ -267,7 +267,16 @@
     h1, h2, h3, h4, h5, h6, p, span, div {
       word-wrap: break-word !important;
       overflow-wrap: break-word !important;
-      hyphens: auto;
+      hyphens: auto !important;
+      -webkit-hyphens: auto !important;
+      word-break: break-word !important;
+      max-width: 100% !important;
+    }
+    
+    /* Prevent text from breaking mid-word */
+    h1, h2, h3, h4, h5, h6 {
+      line-height: 1.2 !important;
+      white-space: normal !important;
     }
   }
 }
@@ -340,5 +349,254 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* ============================================
+   MOBILE OPTIMIZATIONS (ONLY FOR MOBILE - DOES NOT AFFECT DESKTOP)
+   All styles below are scoped to max-width: 768px
+   Desktop (>768px) remains completely unaffected
+   ============================================ */
+
+/* Desktop protection - ensure desktop styles are preserved */
+@media screen and (min-width: 769px) {
+  /* Desktop retains original styling - no changes needed */
+  /* This media query ensures mobile styles don't leak to desktop */
+}
+
+/* Mobile Typography Optimization - Optimal font sizes for readability */
+@media screen and (max-width: 768px) {
+  /* Base font size optimization for mobile */
+  html {
+    font-size: 16px; /* Optimal for mobile readability */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  /* Optimized heading sizes for mobile */
+  h1 {
+    font-size: 2rem !important; /* 32px - optimal for mobile */
+    line-height: 1.2 !important;
+    letter-spacing: -0.02em !important;
+    margin-bottom: 1rem !important;
+  }
+
+  h2 {
+    font-size: 1.75rem !important; /* 28px */
+    line-height: 1.25 !important;
+    letter-spacing: -0.01em !important;
+    margin-bottom: 0.875rem !important;
+  }
+
+  h3 {
+    font-size: 1.5rem !important; /* 24px */
+    line-height: 1.3 !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  h4 {
+    font-size: 1.25rem !important; /* 20px */
+    line-height: 1.35 !important;
+    margin-bottom: 0.625rem !important;
+  }
+
+  /* Optimized paragraph text for mobile */
+  p {
+    font-size: 1rem !important; /* 16px - optimal reading size */
+    line-height: 1.6 !important; /* Better spacing for readability */
+    margin-bottom: 1rem !important;
+  }
+
+  /* Optimized body text */
+  body {
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Better text spacing in paragraphs */
+  p + p {
+    margin-top: 1rem !important;
+  }
+
+  /* Improved button text sizing */
+  button, a.btn, [role="button"] {
+    font-size: 1rem !important; /* 16px - optimal touch target text */
+    line-height: 1.5 !important;
+    padding: 0.75rem 1.5rem !important; /* Better touch area */
+    min-height: 48px !important; /* Minimum touch target (Apple/Google guidelines) */
+    min-width: 48px !important;
+  }
+
+  /* Optimized input fields for mobile */
+  input, textarea, select {
+    font-size: 16px !important; /* Prevents zoom on iOS */
+    line-height: 1.5 !important;
+    padding: 0.875rem 1rem !important;
+    min-height: 48px !important;
+  }
+
+  /* Better spacing for mobile containers */
+  .container, .max-w-7xl, .max-w-4xl, .max-w-6xl {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Optimized section padding for mobile */
+  section {
+    padding-top: 2.5rem !important;
+    padding-bottom: 2.5rem !important;
+  }
+
+  /* Better grid gaps for mobile */
+  .grid {
+    gap: 1.25rem !important;
+  }
+
+  /* Improved card padding for mobile */
+  [class*="p-8"], .p-8 {
+    padding: 1.25rem !important;
+  }
+
+  [class*="p-6"], .p-6 {
+    padding: 1rem !important;
+  }
+
+  /* Better spacing in flex containers */
+  .space-y-4 > * + * {
+    margin-top: 1rem !important;
+  }
+
+  .space-y-6 > * + * {
+    margin-top: 1.5rem !important;
+  }
+
+  .space-y-8 > * + * {
+    margin-top: 2rem !important;
+  }
+
+  /* Optimized navigation */
+  nav {
+    padding: 0.75rem 1rem !important;
+  }
+
+  /* Better link spacing */
+  a:not(.btn):not(button) {
+    padding: 0.5rem 0 !important;
+    display: inline-block;
+    min-height: 44px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Ensure sticky button is above all content */
+  [class*="fixed bottom-4 right-4"] {
+    z-index: 9999 !important;
+  }
+
+  /* Improved hero section spacing */
+  [class*="hero"], section:first-of-type {
+    padding-top: 3rem !important;
+    padding-bottom: 2rem !important;
+  }
+}
+
+/* Small mobile devices (Samsung S23, iPhone SE, etc.) */
+@media screen and (max-width: 428px) {
+  /* Slightly smaller base font for very small screens */
+  html {
+    font-size: 15px;
+  }
+
+  /* Adjusted heading sizes for small screens */
+  h1 {
+    font-size: 1.75rem !important; /* 28px */
+    line-height: 1.2 !important;
+  }
+
+  h2 {
+    font-size: 1.5rem !important; /* 24px */
+    line-height: 1.25 !important;
+  }
+
+  h3 {
+    font-size: 1.25rem !important; /* 20px */
+    line-height: 1.3 !important;
+  }
+
+  /* Maintain readable paragraph size */
+  p {
+    font-size: 0.9375rem !important; /* 15px - still readable */
+    line-height: 1.65 !important;
+  }
+
+  /* Better padding for small screens */
+  .container, section {
+    padding-left: 0.875rem !important;
+    padding-right: 0.875rem !important;
+  }
+
+  /* Samsung S23 specific adjustments */
+  @media screen and (min-width: 360px) {
+    /* Samsung S23 is typically 360-390px wide */
+    [class*="fixed bottom-4 right-4"] {
+      bottom: 1rem;
+      right: 1rem;
+    }
+    
+    /* Ensure text in buttons wraps properly */
+    button, a {
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      white-space: normal !important;
+    }
+    
+    /* Ensure footer has enough space for sticky button */
+    footer {
+      padding-bottom: 5rem !important;
+    }
+  }
+}
+
+/* Extra small devices */
+@media screen and (max-width: 360px) {
+  html {
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 1.5rem !important;
+  }
+
+  h2 {
+    font-size: 1.25rem !important;
+  }
+
+  p {
+    font-size: 0.875rem !important; /* 14px - minimum readable */
+    line-height: 1.7 !important;
+  }
+
+  button, a.btn {
+    font-size: 0.875rem !important;
+    padding: 0.625rem 1.25rem !important;
+  }
+}
+
+/* Landscape mobile optimization */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+  section {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+
+  h1 {
+    font-size: 1.75rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  p {
+    font-size: 0.9375rem !important;
+    line-height: 1.5 !important;
   }
 }

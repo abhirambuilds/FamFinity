@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../assets/logo-mark.svg';
 import FamilyFinance from '../assets/family-finance.svg';
+import InstallButton from '../components/InstallButton';
 
 const About = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -160,16 +161,16 @@ const About = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center mb-8 sm:mb-16">
           <div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium text-white mb-4 sm:mb-6 px-2 sm:px-0" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-1.5px', lineHeight: '120%', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium text-white mb-4 sm:mb-6 px-2 sm:px-0" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-1.5px', lineHeight: '120%', wordWrap: 'break-word', overflowWrap: 'break-word', hyphens: 'auto', WebkitHyphens: 'auto' }}>
                 Our Mission
               </h2>
-              <p className="text-base sm:text-lg mb-4 sm:mb-6 px-2 sm:px-0" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', lineHeight: '1.7', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+              <p className="text-base sm:text-lg mb-4 sm:mb-6 px-2 sm:px-0" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', lineHeight: '1.7', wordWrap: 'break-word', overflowWrap: 'break-word', hyphens: 'auto', WebkitHyphens: 'auto' }}>
                 Financial planning shouldn't be complicated or intimidating. FamFinity makes it easy for families to understand their spending, set realistic goals, and make informed decisions about their financial future. We've built a comprehensive platform that combines powerful AI analytics with an intuitive, user-friendly interface.
               </p>
-              <p className="text-base sm:text-lg mb-4 sm:mb-6 px-2 sm:px-0" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', lineHeight: '1.7', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+              <p className="text-base sm:text-lg mb-4 sm:mb-6 px-2 sm:px-0" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', lineHeight: '1.7', wordWrap: 'break-word', overflowWrap: 'break-word', hyphens: 'auto', WebkitHyphens: 'auto' }}>
                 We believe that every family deserves access to professional-grade financial tools and insights, regardless of their income level or financial knowledge. FamFinity democratizes financial planning by making sophisticated analytics and recommendations available to everyone.
               </p>
-              <p className="text-base sm:text-lg px-2 sm:px-0" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', lineHeight: '1.7', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+              <p className="text-base sm:text-lg px-2 sm:px-0" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', lineHeight: '1.7', wordWrap: 'break-word', overflowWrap: 'break-word', hyphens: 'auto', WebkitHyphens: 'auto' }}>
                 Our platform uses advanced machine learning algorithms to analyze spending patterns, predict future expenses, and provide personalized recommendations. We integrate with multiple financial institutions, support CSV imports, and offer real-time synchronization across devices, making it the perfect companion for modern families managing complex financial lives.
               </p>
             </div>
@@ -371,6 +372,11 @@ const About = () => {
         </div>
       </div>
       </footer>
+
+      {/* Sticky Install Button for Mobile */}
+      <div className="md:hidden fixed bottom-4 right-4 z-50">
+        <InstallButton variant="sticky" />
+      </div>
     </div>
   );
 };
