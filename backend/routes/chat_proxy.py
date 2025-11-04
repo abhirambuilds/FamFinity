@@ -34,78 +34,119 @@ def _build_context_summary(user_id: str) -> str:
     )
 
 
-async def _forward_to_gemini(prompt: str) -> str:
+def _gemini_endpoint(model: str) -> str:
+    """Build the Gemini API endpoint URL for a given model."""
+    return f"https://generativelanguage.googleapis.com/v1/{model}:generateContent"
+
+
+@router.get("/ai/models")
+async def list_gemini_models():
+    """Debug endpoint to list available Gemini models for the current API key."""
     api_key = os.getenv("GEMINI_API_KEY", "").strip()
     if not api_key:
-        # Return a helpful message instead of raising an exception
-        return "I apologize, but the AI service is currently unavailable. Please configure GEMINI_API_KEY in your environment to enable chat functionality."
-
-    # Optimized Gemini proxy for faster, shorter responses
-    # Use gemini-pro with v1 API (stable model and API version)
-    url = "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent"
-    params = {"key": api_key}
+        raise HTTPException(status_code=500, detail="GEMINI_API_KEY is not set")
     
-    # Prepend system instruction to the prompt (v1beta doesn't support systemInstruction field)
-    system_instruction = "You are a helpful financial assistant. Provide clear, concise answers in 2-3 sentences maximum. Focus on key points only."
-    enhanced_prompt = f"{system_instruction}\n\nUser question: {prompt}"
+    url = "https://generativelanguage.googleapis.com/v1/models"
+    timeout = httpx.Timeout(15.0)
     
-    payload: Dict[str, Any] = {
-        "contents": [{"parts": [{"text": enhanced_prompt}]}],
-        "generationConfig": {
-            "maxOutputTokens": 150,  # Limit response length
-            "temperature": 0.7,       # Balanced creativity/speed
-            "topP": 0.8,             # Focus on most likely tokens
-            "topK": 20               # Limit token selection for speed
-        }
-    }
-    timeout = httpx.Timeout(15.0)  # Reduced timeout for faster responses
     try:
         async with httpx.AsyncClient(timeout=timeout) as client:
-            resp = await client.post(url, params=params, json=payload)
-            if resp.status_code != 200:
-                # Truncate error message to avoid issues with very long responses
-                error_detail = resp.text[:500] if len(resp.text) > 500 else resp.text
-                try:
-                    error_json = resp.json()
-                    if "error" in error_json:
-                        error_detail = error_json.get("error", {}).get("message", error_detail)
-                except:
-                    pass
-                raise HTTPException(status_code=resp.status_code, detail=f"Gemini API error: {error_detail}")
-            
-            data = resp.json()
+            r = await client.get(url, params={"key": api_key})
+        
+        if r.headers.get("content-type", "").startswith("application/json"):
+            return {"status": r.status_code, "body": r.json()}
+        else:
+            return {"status": r.status_code, "body": r.text}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to list models: {str(e)}")
+
+
+async def _forward_to_gemini(prompt: str) -> str:
+    """Forward prompt to Gemini API with robust error handling and parsing."""
+    api_key = os.getenv("GEMINI_API_KEY", "").strip()
+    if not api_key:
+        return "AI is unavailable: missing GEMINI_API_KEY."
+
+    # Allow override via env; default to a known-good model
+    model = os.getenv("GEMINI_MODEL", "models/gemini-1.5-flash").strip()
+    url = _gemini_endpoint(model)
+
+    system_instruction = (
+        "You are a helpful financial assistant. Reply in 2-3 concise sentences. "
+        "Focus on key points only."
+    )
+    enhanced = f"{system_instruction}\n\nUser question: {prompt}"
+
+    payload = {
+        "contents": [
+            {"parts": [{"text": enhanced}]}
+        ],
+        "generationConfig": {
+            "maxOutputTokens": 150,
+            "temperature": 0.7,
+            "topP": 0.8,
+            "topK": 20
+        }
+    }
+
+    timeout = httpx.Timeout(20.0)
+    try:
+        async with httpx.AsyncClient(timeout=timeout) as client:
+            resp = await client.post(url, params={"key": api_key}, json=payload)
+
+        if resp.status_code != 200:
+            detail = resp.text
             try:
-                # Check if response has candidates
-                if "candidates" not in data or not data.get("candidates"):
-                    error_msg = data.get("error", {}).get("message", "No response generated")
-                    raise HTTPException(status_code=500, detail=f"Gemini API returned no candidates: {error_msg}")
-                
-                response_text = data["candidates"][0]["content"]["parts"][0]["text"]
-                # Truncate response if it's still too long (fallback safety)
-                if len(response_text) > 500:
-                    response_text = response_text[:500] + "..."
-                return response_text
-            except (KeyError, IndexError) as e:
-                # Better error handling for response parsing
-                import traceback
-                print(f"Error parsing Gemini response: {traceback.format_exc()}")
-                print(f"Response data: {data}")
-                error_msg = str(e) if str(e) else f"KeyError/IndexError: {type(e).__name__}"
-                raise HTTPException(status_code=500, detail=f"Failed to parse Gemini response: {error_msg}")
+                j = resp.json()
+                detail = j.get("error", {}).get("message", detail)
+            except Exception:
+                pass
+            # Important: include model & endpoint in error for debugging
+            raise HTTPException(
+                status_code=resp.status_code, 
+                detail=f"Gemini error ({model}): {detail}"
+            )
+
+        data = resp.json()
+
+        # Robust parsing for Gemini REST:
+        # Typical shape: { "candidates": [ { "content": { "parts": [ {"text": "..."} ] } } ] }
+        text = ""
+        try:
+            candidates = data.get("candidates", [])
+            if candidates:
+                content = candidates[0].get("content", {})
+                parts = content.get("parts", [])
+                text = "".join(p.get("text", "") for p in parts if isinstance(p, dict))
+        except Exception as e:
+            print(f"Error parsing Gemini response: {e}")
+            print(f"Response data: {data}")
+
+        return text or "I couldn't generate a response."
+    
     except HTTPException:
         # Re-raise HTTPException as-is
         raise
     except httpx.TimeoutException:
-        raise HTTPException(status_code=500, detail="Gemini API request timed out after 15 seconds")
+        raise HTTPException(
+            status_code=500, 
+            detail="Gemini API request timed out after 20 seconds"
+        )
     except httpx.RequestError as e:
         error_msg = str(e) if str(e) else "Network connection error"
-        raise HTTPException(status_code=500, detail=f"Network error connecting to Gemini API: {error_msg}")
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Network error connecting to Gemini API: {error_msg}"
+        )
     except Exception as e:
         import traceback
         error_trace = traceback.format_exc()
         print(f"Unexpected error in _forward_to_gemini: {error_trace}")
         error_msg = str(e) if str(e) else f"{type(e).__name__} occurred"
-        raise HTTPException(status_code=500, detail=f"Unexpected error calling Gemini API: {error_msg}")
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Unexpected error calling Gemini API: {error_msg}"
+        )
 
 
 @router.post("/chat", response_model=ChatResponse)

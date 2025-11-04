@@ -96,6 +96,32 @@ Backend will run on `http://localhost:8000`
 
 Frontend will run on `http://localhost:5173`
 
+### Gemini AI Configuration
+
+The application uses Google's Gemini API for AI-powered features. To configure:
+
+1. **Get a Gemini API Key**
+   - Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+   - Create an API key
+
+2. **Set Environment Variables**
+   - `GEMINI_API_KEY` (required): Your Gemini API key
+   - `GEMINI_MODEL` (optional): Model name to use (default: `models/gemini-1.5-flash`)
+
+3. **Debug Available Models**
+   - Use the debug endpoint to see which models are available:
+     ```bash
+     GET https://your-backend-url/ai/models
+     ```
+   - This will return a list of available models for your API key
+   - Copy the exact model name (e.g., `models/gemini-1.5-flash`) and set it in `GEMINI_MODEL`
+
+4. **REST Endpoint**
+   - The API uses: `v1/{model}:generateContent`
+   - Always include the `models/` prefix in the model name
+
+**Note**: The old `models/gemini-pro` model has been retired. Use `models/gemini-1.5-flash` or check `/ai/models` for available options.
+
 ### Frontend Static Assets
 
 PWA files (manifest, icons, logo) live in `frontend/public` and are automatically copied to the `dist` root by Vite during the build process. This includes:

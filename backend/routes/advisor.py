@@ -157,16 +157,22 @@ def _get_default_summary() -> Dict[str, Any]:
     }
 
 
+def _gemini_endpoint(model: str) -> str:
+    """Build the Gemini API endpoint URL for a given model."""
+    return f"https://generativelanguage.googleapis.com/v1/{model}:generateContent"
+
+
 async def _forward_to_gemini_for_advisor(prompt: str) -> str:
     """Forward query to Gemini API with financial context for advisor"""
     api_key = os.getenv("GEMINI_API_KEY", "").strip()
     if not api_key:
         return None  # Return None if API key is not set (will fall back to rule-based)
     
-    url = "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent"
-    params = {"key": api_key}
+    # Allow override via env; default to a known-good model
+    model = os.getenv("GEMINI_MODEL", "models/gemini-1.5-flash").strip()
+    url = _gemini_endpoint(model)
     
-    # Prepend system instruction to the prompt (v1beta doesn't support systemInstruction field)
+    # Prepend system instruction to the prompt
     system_instruction = (
         "You are a professional financial advisor. Analyze the user's financial situation and provide "
         "clear, actionable advice with EXACTLY 2-3 actionable recommendations. "
@@ -187,20 +193,34 @@ async def _forward_to_gemini_for_advisor(prompt: str) -> str:
         }
     }
     
-    timeout = httpx.Timeout(15.0)
+    timeout = httpx.Timeout(20.0)
     try:
         async with httpx.AsyncClient(timeout=timeout) as client:
-            resp = await client.post(url, params=params, json=payload)
+            resp = await client.post(url, params={"key": api_key}, json=payload)
             if resp.status_code != 200:
+                # Log error for debugging but fall back to rule-based
+                try:
+                    error_json = resp.json()
+                    error_msg = error_json.get("error", {}).get("message", resp.text)
+                    print(f"Gemini API error ({model}): {error_msg}")
+                except:
+                    print(f"Gemini API error ({model}): {resp.status_code} - {resp.text[:200]}")
                 return None  # Fall back to rule-based if API fails
             
             data = resp.json()
+            # Robust parsing
             try:
-                response_text = data["candidates"][0]["content"]["parts"][0]["text"]
-                return response_text
-            except (KeyError, IndexError):
+                candidates = data.get("candidates", [])
+                if candidates:
+                    content = candidates[0].get("content", {})
+                    parts = content.get("parts", [])
+                    response_text = "".join(p.get("text", "") for p in parts if isinstance(p, dict))
+                    return response_text if response_text else None
+            except (KeyError, IndexError) as e:
+                print(f"Error parsing Gemini response: {e}")
                 return None
-    except Exception:
+    except Exception as e:
+        print(f"Error calling Gemini API: {e}")
         return None  # Fall back to rule-based on any error
 
 
