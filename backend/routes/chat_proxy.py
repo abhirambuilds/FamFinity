@@ -45,19 +45,17 @@ async def _forward_to_gemini(prompt: str) -> str:
     url = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent"
     params = {"key": api_key}
     
-    # Add system instruction for concise responses
+    # For v1 API, prepend system instruction to the prompt (v1 doesn't support systemInstruction field)
     system_instruction = "You are a helpful financial assistant. Provide clear, concise answers in 2-3 sentences maximum. Focus on key points only."
+    enhanced_prompt = f"{system_instruction}\n\nUser question: {prompt}"
     
     payload: Dict[str, Any] = {
-        "contents": [{"parts": [{"text": prompt}]}],
+        "contents": [{"parts": [{"text": enhanced_prompt}]}],
         "generationConfig": {
             "maxOutputTokens": 150,  # Limit response length
             "temperature": 0.7,       # Balanced creativity/speed
             "topP": 0.8,             # Focus on most likely tokens
             "topK": 20               # Limit token selection for speed
-        },
-        "systemInstruction": {
-            "parts": [{"text": system_instruction}]
         }
     }
     timeout = httpx.Timeout(15.0)  # Reduced timeout for faster responses

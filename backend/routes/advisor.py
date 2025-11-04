@@ -166,25 +166,24 @@ async def _forward_to_gemini_for_advisor(prompt: str) -> str:
     url = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent"
     params = {"key": api_key}
     
+    # For v1 API, prepend system instruction to the prompt (v1 doesn't support systemInstruction field)
     system_instruction = (
         "You are a professional financial advisor. Analyze the user's financial situation and provide "
         "clear, actionable advice with EXACTLY 2-3 actionable recommendations. "
         "Format your response as: 'EXPLANATION: [your analysis in 1-2 sentences]' "
         "followed by 2-3 actions, each on a new line as: "
         "'ACTION: [action title] - RATIONALE: [explanation] - IMPACT: ₹[amount]/month' "
-        "Use Indian Rupees (₹) for currency. Make sure to provide 2-3 distinct recommendations."
+        "Use Indian Rupees (₹) for currency. Make sure to provide 2-3 distinct recommendations.\n\n"
     )
+    enhanced_prompt = f"{system_instruction}{prompt}"
     
     payload: Dict[str, Any] = {
-        "contents": [{"parts": [{"text": prompt}]}],
+        "contents": [{"parts": [{"text": enhanced_prompt}]}],
         "generationConfig": {
             "maxOutputTokens": 600,
             "temperature": 0.7,
             "topP": 0.8,
             "topK": 20
-        },
-        "systemInstruction": {
-            "parts": [{"text": system_instruction}]
         }
     }
     
