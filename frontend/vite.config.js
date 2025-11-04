@@ -21,7 +21,9 @@ export default defineConfig({
             return '[name][extname]';
           }
           return 'assets/[name]-[hash][extname]';
-        }
+        },
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js'
       }
     }
   }
