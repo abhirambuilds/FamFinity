@@ -7,7 +7,8 @@ services:
     # Use PYTHON_VERSION env var or .python-version file instead
     buildCommand: >
       python -m pip install --upgrade pip setuptools wheel &&
-      pip install --no-cache-dir -r requirements-production-no-torch.txt
+      pip install --no-cache-dir -r requirements-production-no-torch.txt &&
+      pip install --no-cache-dir "websockets>=13.1,<15.0"
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
