@@ -13,17 +13,15 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
+    emptyOutDir: true,
     rollupOptions: {
       output: {
         // Ensure service worker and manifest are included in build
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name === 'sw.js' || assetInfo.name === 'manifest.json') {
-            return '[name][extname]';
-          }
-          return 'assets/[name]-[hash][extname]';
-        },
+        assetFileNames: 'assets/[name]-[hash][extname]',
         entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js'
+        chunkFileNames: 'assets/[name]-[hash].js',
+        // Special handling for manifest and service worker - keep them in root
+        manualChunks: undefined
       }
     }
   }
