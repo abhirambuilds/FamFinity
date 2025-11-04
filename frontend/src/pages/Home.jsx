@@ -647,20 +647,20 @@ const Home = () => {
       </section>
 
       {/* Integrations Section */}
-      <section className="py-20 overflow-x-hidden" style={{ backgroundColor: '#120b25', width: '100%', maxWidth: '100vw' }}>
+      <section className="py-12 sm:py-20 overflow-x-auto android-scroll-x" style={{ backgroundColor: '#120b25', width: '100%', maxWidth: '100vw' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ width: '100%', maxWidth: '100%' }}>
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-medium text-white mb-4" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-1.5px', lineHeight: '120%' }}>
+          <div className="text-center mb-8 sm:mb-12 px-2">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium text-white mb-3 sm:mb-4 px-2" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-1.5px', lineHeight: '120%', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
               Seamlessly Links with 5k+ Applications
             </h2>
-            <p className="text-xl max-w-3xl mx-auto" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif' }}>
+            <p className="text-base sm:text-lg md:text-xl max-w-3xl mx-auto px-2" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
               Connect with banks, payment apps, and investment platforms to consolidate all your financial data in one place.
             </p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-8 items-center justify-center opacity-60">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-4 sm:gap-6 md:gap-8 items-center justify-center opacity-60 px-2">
             {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-              <div key={i} className="rounded-lg p-6 transition-all flex items-center justify-center h-24" style={{ backgroundColor: '#221e2f' }}>
-                <div className="w-16 h-16 rounded-lg" style={{ backgroundColor: '#6246e9', opacity: 0.3 }}></div>
+              <div key={i} className="rounded-lg p-4 sm:p-6 transition-all flex items-center justify-center h-20 sm:h-24 min-w-0" style={{ backgroundColor: '#221e2f' }}>
+                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg flex-shrink-0" style={{ backgroundColor: '#6246e9', opacity: 0.3 }}></div>
               </div>
             ))}
           </div>

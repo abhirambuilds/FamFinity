@@ -34,7 +34,7 @@ const About = () => {
   }, [isMobileMenuOpen]);
 
   return (
-    <div className="min-h-screen overflow-x-hidden" style={{ backgroundColor: '#120b25', width: '100%', maxWidth: '100vw' }}>
+    <div className="min-h-screen overflow-x-auto android-scroll-x" style={{ backgroundColor: '#120b25', width: '100%', maxWidth: '100vw' }}>
       {/* Navigation */}
       <nav className="sticky top-0 z-50" style={{ backgroundColor: '#120b25' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative" style={{ width: '100%', maxWidth: '100%' }}>
@@ -142,10 +142,10 @@ const About = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="py-20 lg:py-32" style={{ backgroundColor: '#120b25' }}>
+      <section className="py-12 sm:py-16 md:py-20 lg:py-32 overflow-x-auto android-scroll-x" style={{ backgroundColor: '#120b25' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-6xl font-medium text-white leading-tight mb-6" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-2px', lineHeight: '120%' }}>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-white leading-tight mb-4 sm:mb-6 px-2" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-2px', lineHeight: '120%', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
               About FamFinity
             </h1>
             <p className="text-lg sm:text-xl mb-10 max-w-2xl mx-auto px-4" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', lineHeight: '1.7', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
@@ -156,11 +156,11 @@ const About = () => {
       </section>
 
       {/* Mission Section */}
-      <section className="py-20" style={{ backgroundColor: '#120b25' }}>
+      <section className="py-12 sm:py-20" style={{ backgroundColor: '#120b25' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center mb-8 sm:mb-16">
           <div>
-              <h2 className="text-4xl md:text-5xl font-medium text-white mb-6" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-1.5px', lineHeight: '120%' }}>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium text-white mb-4 sm:mb-6 px-2 sm:px-0" style={{ fontFamily: '"Inter Tight", sans-serif', letterSpacing: '-1.5px', lineHeight: '120%', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
                 Our Mission
               </h2>
               <p className="text-base sm:text-lg mb-4 sm:mb-6 px-2 sm:px-0" style={{ color: '#c4c4c4', fontFamily: '"Inter Tight", sans-serif', lineHeight: '1.7', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
@@ -174,7 +174,7 @@ const About = () => {
               </p>
             </div>
             <div className="rounded-2xl overflow-hidden shadow-2xl" style={{ backgroundColor: '#221e2f' }}>
-              <div className="p-8">
+              <div className="p-4 sm:p-6 md:p-8">
                 <img src={FamilyFinance} alt="Family finance" className="w-full h-auto rounded-xl" />
               </div>
             </div>

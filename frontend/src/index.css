@@ -230,6 +230,48 @@
   }
 }
 
+/* Android-specific spacing fixes */
+@media screen and (max-width: 768px) {
+  @supports not (-webkit-touch-callout: none) {
+    /* Android devices - reduce extra spacing */
+    section {
+      padding-top: 1.5rem !important;
+      padding-bottom: 1.5rem !important;
+    }
+    
+    /* Reduce gaps in grids on Android */
+    .grid {
+      gap: 1rem !important;
+    }
+    
+    /* Reduce margins between paragraphs */
+    p + p {
+      margin-top: 0.75rem !important;
+    }
+    
+    /* Reduce spacing in flex containers */
+    .space-y-4 > * + * {
+      margin-top: 0.75rem !important;
+    }
+    
+    .space-y-6 > * + * {
+      margin-top: 1rem !important;
+    }
+    
+    /* Reduce padding in cards */
+    .p-8, [class*="p-8"] {
+      padding: 1rem !important;
+    }
+    
+    /* Better text wrapping */
+    h1, h2, h3, h4, h5, h6, p, span, div {
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      hyphens: auto;
+    }
+  }
+}
+
 @media (max-width: 390px) {
   /* Samsung Galaxy A35 and smaller devices */
   html {
