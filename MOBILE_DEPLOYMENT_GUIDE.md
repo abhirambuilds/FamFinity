@@ -79,6 +79,7 @@ If you've had PyTorch deployment issues before, use the **NO-TORCH version** (re
 - **If build fails**: Switch to Option A (no-torch)
 
 **If NOT using render.yaml (manual setup):**
+- **Python Version**: Set to `3.12` (important - Python 3.13 has compatibility issues)
 - **Build Command**: `pip install --upgrade pip setuptools wheel && pip install -r requirements-production-no-torch.txt`
 - **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
 
@@ -239,10 +240,21 @@ VITE_API_URL=https://your-backend-url.onrender.com
 - **Note**: Requirements file has been updated with compatible versions
 - **See**: `PANDAS_FIX.md` for detailed instructions
 
+**Asyncpg Build Fails (Python 3.13 Error):**
+- ✅ **Solution**: Specify Python 3.12 in Render settings
+- In Render dashboard:
+  1. Go to your service settings
+  2. Find **Python Version** (or add it in Environment variables)
+  3. Set to `3.12` (not 3.13)
+  4. Save and redeploy
+- **Why this works**: Python 3.13 is too new - many packages (like asyncpg) don't have pre-built wheels yet
+- **Alternative**: Use `render-no-torch.yaml` which specifies Python 3.12
+
 **Build fails:**
 - Check build logs in Render dashboard for specific errors
 - Verify all environment variables are set correctly
 - Make sure `SUPABASE_URL` doesn't have trailing slash
+- **Important**: Ensure Python version is 3.12 (not 3.13)
 - Try the no-torch version first (easier to deploy)
 
 **Service crashes:**
