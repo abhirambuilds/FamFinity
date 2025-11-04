@@ -205,7 +205,7 @@ const NewDashboard = () => {
 
   return (
     <AppLayout user={user}>
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 mb-6 overflow-x-hidden" style={{ width: '100%', maxWidth: '100%' }}>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 mb-6 overflow-x-auto android-scroll-x" style={{ width: '100%', maxWidth: '100%' }}>
         {/* Top Left - Financial Summary Card */}
         <div className="lg:col-span-5">
           <div className="bg-[#252525] rounded-xl p-4 sm:p-6 border border-gray-800 overflow-hidden" style={{ width: '100%', maxWidth: '100%' }}>
@@ -541,7 +541,7 @@ const TrendChart = ({ data }) => {
   const areaD = `${pathD} L ${points[points.length - 1].x} ${height - padding} L ${padding} ${height - padding} Z`;
   
   return (
-    <div className="w-full overflow-x-auto">
+    <div className="w-full overflow-x-auto android-scroll-x smooth-scroll-x" style={{ touchAction: 'pan-x pan-y', WebkitOverflowScrolling: 'touch' }}>
       <svg width={width} height={height} className="min-w-full">
         {/* Grid lines */}
         {[0, 0.25, 0.5, 0.75, 1].map((ratio) => {
