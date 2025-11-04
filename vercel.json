@@ -24,6 +24,10 @@
       "dest": "/$1"
     },
     {
+      "src": "/src/(.*)",
+      "status": 404
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
