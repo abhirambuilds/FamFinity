@@ -20,9 +20,10 @@ numpy>=2.1.0,<2.4.0
 pandas>=2.2.0,<2.3.0
 
 # ML dependencies - WITHOUT PyTorch (fallback to baseline models only)
-scikit-learn>=1.2.0,<1.4.0
-matplotlib>=3.6.0,<3.9.0
-joblib>=1.2.0,<1.4.0
+# Using versions with pre-built wheels for Render
+scikit-learn>=1.5.0,<1.6.0
+matplotlib>=3.8.0,<3.10.0
+joblib>=1.3.0,<1.5.0
 
 # PyTorch is NOT included - LSTM predictions will use baseline models instead
 # If you need LSTM predictions, use requirements-production.txt instead
