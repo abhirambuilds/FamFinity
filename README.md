@@ -138,6 +138,31 @@ For testing purposes, use these credentials:
 └── data/               # Sample data files
 ```
 
+## 🚀 Deployment
+
+This project can be deployed to production using:
+- **Backend**: [Render](https://render.com) (configured via `render.yaml`)
+- **Frontend**: [Vercel](https://vercel.com) (configured via `vercel.json`)
+
+For detailed deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md).
+
+### Quick Deployment Steps
+
+1. **Backend (Render)**:
+   - Connect GitHub repository to Render
+   - Render will auto-detect `render.yaml`
+   - Set environment variables in Render dashboard
+   - Deploy
+
+2. **Frontend (Vercel)**:
+   - Connect GitHub repository to Vercel
+   - Set root directory to `frontend`
+   - Set `VITE_API_URL` environment variable to your Render backend URL
+   - Deploy
+
+3. **Update CORS**:
+   - After frontend deployment, update `FRONTEND_URL` in Render with your Vercel URL
+
 ## 🤝 Contributing
 
 1. Fork the repository
